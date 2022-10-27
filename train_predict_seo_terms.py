@@ -1,3 +1,8 @@
+"""
+Follow tutorials listed below
+  https://github.com/ThilinaRajapakse/simpletransformers
+"""
+
 from simpletransformers.classification import ClassificationModel, ClassificationArgs
 import pandas as pd
 import logging

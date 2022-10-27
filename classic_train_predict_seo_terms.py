@@ -57,6 +57,7 @@ train_labels = [
     label
     for sample,label in train_samples
 ]
+# TODO tune the parameters
 clf = tree.DecisionTreeClassifier()
 clf.fit(train_features, train_labels)
 test_features = [
