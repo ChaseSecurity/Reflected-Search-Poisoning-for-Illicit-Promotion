@@ -2,6 +2,7 @@ import pandas as pd
 import logging
 import ast
 import sklearn
+from sklearn import tree, metrics
 from sklearn.model_selection import train_test_split
 import torch
 logging.basicConfig(level=logging.INFO)
@@ -24,41 +25,50 @@ logging.info(f"Loaded {len(positive_cases)}")
 logging.info(f"Loaded {len(negative_cases)}")
 
 samples = negative_cases + positive_cases
-
-logging.basicConfig(level=logging.INFO)
-transformers_logger = logging.getLogger("transformers")
-transformers_logger.setLevel(logging.WARNING)
-
-sample_df = pd.DataFrame(samples)
-sample_df.columns = ["text", "labels"]
-train_df, eval_df = train_test_split(sample_df, test_size=0.2)
+train_samples, test_samples = train_test_split(samples, test_size=0.2)
 
 def feature_extract(sample):
-    # length in bytes, in characters
-    # url number
+    features = []
+    # length in in characters
+    features.append(len(sample))
     # if [, ],【 】pass
-    # non alphanumeric characters and number
+    if "[" in sample and "]" in sample:
+        features.append(1)
+    else:
+        features.append(0)
+    if "【" in sample and "】" in sample:
+        features.append(1)
+    else:
+        features.append(0)
+    # url number
+    # TODO add the following features
+    # url number
+    # number of non alphanumeric characters
     # number of numberic characters
     # longest number string
-    pass
+    return features
 
-# Optional model configuration
-cuda_available = torch.cuda.is_available()
-model_args = ClassificationArgs(num_train_epochs=1)
-
-# Create a ClassificationModel
-model = ClassificationModel(
-    "roberta",
-    "roberta-base",
-    use_cuda=cuda_available,
-    args=model_args,
-)
-
-# Train the model
-model.train_model(train_df)
-
-# Evaluate the model
-result, model_outputs, wrong_predictions = model.eval_model(eval_df)
-
-# Make predictions with the model
-# predictions, raw_outputs = model.predict(["Sam was a Wizard"])
+# TODO, try different classific classification algorithms, random forest, svm, decision tree, GBDT, etc
+train_features = [
+    feature_extract(sample)
+    for sample,label in train_samples
+]
+train_labels = [
+    label
+    for sample,label in train_samples
+]
+clf = tree.DecisionTreeClassifier()
+clf.fit(train_features, train_labels)
+test_features = [
+    feature_extract(sample)
+    for sample, label in test_samples
+]
+test_labels = [
+    label
+    for sample, label in test_samples
+]
+predicts = clf.predict(test_features)
+recall = metrics.recall_score(test_labels, predicts)
+precision = metrics.precision_score(test_labels, predicts)
+f1 = metrics.f1_score(test_labels, predicts)
+logging.info(f"Recall {recall}, precision {precision}, f1 {f1}")
