@@ -46,8 +46,8 @@ class = {Drug, Gambling, Surrogacy, Sex & Porn, SEO, Cryptocurrency, General ser
 
 Use some methods to extract contact information embedding in terms. 
 
-Now finished extract websites, telegram accounts. 
+Now finished extracting websites, and telegram accounts. 
 
 ## Website Timemachine
 
-A timemachine to crawl websites extracted from SEO terms. 
+A time machine to crawl websites extracted from SEO terms. 
