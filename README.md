@@ -42,6 +42,12 @@ Classify a term using a multilabel classifier, to identify the cybercrime activi
 
 class = {Drug, Gambling, Surrogacy, Sex & Porn, SEO, Cryptocurrency, General service, Hacker & Crime, Coding & Ghost writing, (Fake) Certificate & Account, Sales & Advertisement, (Fake) Merchandise, SMS, VPN, Financial related, Web Service & App, Benign Terms, Detective, Data service, Unknown}
 
-## Website_Timemachine
+## Contact Information Extraction
+
+Use some methods to extract contact information embedding in terms. 
+
+Now finished extract websites, telegram accounts. 
+
+## Website Timemachine
 
 A timemachine to crawl websites extracted from SEO terms. 
