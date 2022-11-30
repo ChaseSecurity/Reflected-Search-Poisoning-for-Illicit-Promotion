@@ -104,9 +104,8 @@ def get_telegram_contact(terms_all_list, tg_contact):
                 new_out = out[key]
                 preds = list(softmax(np.mean(new_out, axis=0)))
                 print(key, pred[key], preds[np.argmax(preds)], preds)
-        for i in range(1, 5):
-            if result[i] != '' and len(result[i]) > 3:
-                tg_contact[result[i]] = sentences_raw[n]
+        if result[1] != '' and len(result[1]) > 3 and result[1] != '@':
+            tg_contact[result[1]] = sentences_raw[n]
 
 
 data = []

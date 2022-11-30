@@ -20,6 +20,7 @@ transformers_logger.setLevel(logging.WARNING)
 
 NER_model_path = '/data/jlxue/RBSEO_NER_train_model'
 classify_model_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
+qq_succeed_path = '/data/jlxue/qq_succeed_classifier_model'
 
 
 def get_qq_contact(terms_all_list, qq_contact):
@@ -40,11 +41,19 @@ def get_qq_contact(terms_all_list, qq_contact):
     args = ClassificationArgs(eval_batch_size = 32, use_multiprocessing_for_evaluation=False)
     model = ClassificationModel('roberta', classify_model_path, num_labels=len(labels_list), use_cuda=cuda_available, args = args)
 
-    qq_terms = []
+    qq_terms_origin = []
     predictions, raw_outputs = model.predict(terms_all_list)
 
     for index, term in enumerate(terms_all_list):
         if labels_list[predictions[index]] == 'qq':
+            qq_terms_origin.append(term)
+
+    qq_terms = []
+    args = ClassificationArgs(eval_batch_size = 32, use_multiprocessing_for_evaluation=False)
+    model = ClassificationModel('roberta', qq_succeed_path, use_cuda=cuda_available, args = args)
+    predictions, raw_outputs = model.predict(qq_terms_origin)
+    for index, term in enumerate(qq_terms_origin):
+        if predictions[index] == 1:
             qq_terms.append(term)
 
     print(f'Finish contact classification, get qq term {len(qq_terms)}')
@@ -66,8 +75,9 @@ def get_qq_contact(terms_all_list, qq_contact):
         compileX = re.compile(r"\d+")
         num_result = compileX.findall(term)
         for nums in num_result:
-            if len(nums) >= 7:
+            if len(nums) >= 7 and len(nums) <= 12:
                 qq_contact[nums] = term_origin
+                break
     #-------------------------------------------------------------------------------------------------
     
 
