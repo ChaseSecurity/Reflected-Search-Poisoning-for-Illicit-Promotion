@@ -106,7 +106,7 @@ def get_telegram_contact(terms_all_list, tg_contact):
                 print(key, pred[key], preds[np.argmax(preds)], preds)
         for i in range(1, 5):
             if result[i] != '' and len(result[i]) > 3:
-                tg_contact.add(result[i])
+                tg_contact[result[i]] = sentences_raw[n]
 
 
 data = []
@@ -137,7 +137,7 @@ print(f'Finish Getting terms, get {len(terms_all)} terms')
 labels_list = ['website', 'wechat', 'qq', 'telegram', 'others']
 labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4}
 terms_all_list = []
-tg_contact = set()
+tg_contact = {}
 num = 0
 index_term = 0
 
@@ -160,6 +160,6 @@ get_telegram_contact(terms_all_list, tg_contact)
 print(f'Finish extract telegram contact, get {len(tg_contact)}')
 with open('data/telegram_contact.txt', 'w', encoding='utf-8') as fp:
     for item in tg_contact:
-        fp.write(item)
+        fp.write(str((item, tg_contact[item])))
         fp.write('\n')
 
