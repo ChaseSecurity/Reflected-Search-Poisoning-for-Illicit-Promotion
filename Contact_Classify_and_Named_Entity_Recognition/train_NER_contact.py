@@ -4,9 +4,9 @@ from scipy.special import softmax
 from sklearn.model_selection import train_test_split
 import csv
 from simpletransformers.ner import NERModel
-output_path = '/data/jlxue/RBSEO_NER_train_model'
+output_path = '/data/jlxue/RBSEO_wechat_NER_train_model'
 
-with open("contact_NER_for_labeling.csv", mode="r", encoding="utf-8") as fp:
+with open("wechat_NER_for_labeling.csv", mode="r", encoding="utf-8") as fp:
     reader = csv.reader(fp)
     header = next(reader)
     samples = []
