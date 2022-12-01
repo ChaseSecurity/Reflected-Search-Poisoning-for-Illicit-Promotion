@@ -60,7 +60,11 @@ def try_dns(url:str):
 for term in terms:
     try:
         url = re.search(url_pattern, term).group().lower() 
-        if is_legal_url(url):
+        if is_legal_url(url) and not term.startswith('http://') and not term.startswith('https://'):
+            # Sometimes term is a whole url starts with http://, this is often a redirecting url embedding in origin url, 
+            # instead of a SEO term. 
+            # Actually this is a false positive term misclassified by our adaboost classifier. 
+            # Jump over when extracting url from terms. 
             if url not in urls_origin.keys():
                 urls_origin[url] = term
     except:
