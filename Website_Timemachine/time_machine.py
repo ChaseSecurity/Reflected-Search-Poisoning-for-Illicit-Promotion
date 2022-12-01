@@ -170,39 +170,47 @@ class WebTimeMachine:
             browser: playwright.async_api.Browser,
             timeout_in_millisec: int=10000,
     ) -> typing.Tuple[bool, str]:
+        e_message = ""
+        for retry_times in range(3):
+            timeout_in_millisec += 10000
+            logging.info(f"Start to screen URL {url}, Try #{retry_times+1}")
+            try:
+                context = await browser.new_context(
+                    ignore_https_errors=True,
+                    record_har_path=os.path.join(result_dir, "test.har"),
+                    # uncomment if the redendering video is needed
+                    # record_video_dir=result_dir,
+                )
 
-        try:
-            logging.info(f"Start to screen URL {url}")
-            context = await browser.new_context(
-                record_har_path=os.path.join(result_dir, "test.har"),
-                # uncomment if the redendering video is needed
-                # record_video_dir=result_dir,
-            )
+                context.set_default_timeout(timeout_in_millisec)
+                page = await context.new_page()
 
-            context.set_default_timeout(timeout_in_millisec)
-            page = await context.new_page()
+                if 'ngrok' in url:
+                    await context.set_extra_http_headers({"ngrok-skip-browser-warning": "ngrok"})
 
-            if 'ngrok' in url:
-                await context.set_extra_http_headers({"ngrok-skip-browser-warning": "ngrok"})
+                resp = await page.goto(
+                    url,
+                    timeout=timeout_in_millisec,
+                    # wait_until='networkidle',
+                )
 
-            resp = await page.goto(
-                url,
-                timeout=timeout_in_millisec,
-                # wait_until='networkidle',
-            )
+                await page.wait_for_timeout(5000)
 
-            await page.wait_for_timeout(5000)
+                screenshot = await page.screenshot(path=os.path.join(result_dir, "page_screenshot.png"))
 
-            screenshot = await page.screenshot(path=os.path.join(result_dir, "page_screenshot.png"))
+                # Wait at most 120 seconds when closing the context,
+                #  since context closing could hang for an endless time
+                await asyncio.wait_for(context.close(), timeout=120)
 
-            # Wait at most 10 seconds when closing the context,
-            #  since context closing could hang for an endless time
-            await asyncio.wait_for(context.close(), timeout=5)
-
-            return (True, "")
-        except Exception as e:
-            e_message = f"Got exception {type(e)}: {e} when visiting page {url}"
-            return (False, e_message)
+                return (True, "")
+            except playwright._impl._api_types.TimeoutError as e:
+                e_message = f"Got exception {type(e)}: {e} when visiting page {url}"
+                continue
+            except Exception as e:
+                e_message = f"Got exception {type(e)}: {e} when visiting page {url}"
+                break
+        
+        return (False, e_message)
 
     # TODO fix the issue of "page is closed" when sharing the same browser instance
     async def screen_multi_pages(
