@@ -1,1 +1,0 @@
-nohup python time_machine.py urls.txt 20221122 output &
