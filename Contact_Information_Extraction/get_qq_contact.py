@@ -76,7 +76,10 @@ def get_qq_contact(terms_all_list, qq_contact):
         num_result = compileX.findall(term)
         for nums in num_result:
             if len(nums) >= 7 and len(nums) <= 12:
-                qq_contact[nums] = term_origin
+                if nums not in qq_contact.keys():
+                    qq_contact[nums] = [term_origin, 1]
+                else:
+                    qq_contact[nums][1] += 1
                 break
     #-------------------------------------------------------------------------------------------------
     
@@ -132,7 +135,12 @@ get_qq_contact(terms_all_list, qq_contact)
 
 print(f'Finish extract qq contact, get {len(qq_contact)}')
 with open('data/qq_contact.txt', 'w', encoding='utf-8') as fp:
-    for item in qq_contact:
-        fp.write(str((item, qq_contact[item])))
+    qq_list = []
+    for qq in qq_contact:
+        qq_list.append((qq, qq_contact[qq][0], qq_contact[qq][1]))
+
+    qq_list.sort(key=lambda x: -x[2])
+    for item in qq_list:
+        fp.write(str(item))
         fp.write('\n')
 
