@@ -66,7 +66,9 @@ for term in terms:
             # Actually this is a false positive term misclassified by our adaboost classifier. 
             # Jump over when extracting url from terms. 
             if url not in urls_origin.keys():
-                urls_origin[url] = term
+                urls_origin[url] = [term, 1]
+            else:
+                urls_origin[url][1] += 1
     except:
         pass
 
@@ -93,8 +95,13 @@ for index, url in enumerate(urls_origin.keys()):
 
 thread_pool.shutdown(wait= True)
 with open('data/urls_from_terms.txt', 'w', encoding='utf-8') as fp:
+    url_list = []
     for url in urls:
-        fp.write(str((url, urls[url])))
+        url_list.append((url, urls[url][0], urls[url][1]))
+
+    url_list.sort(key=lambda x: -x[2])
+    for data in url_list:
+        fp.write(str(data))
         fp.write('\n')
 
 
