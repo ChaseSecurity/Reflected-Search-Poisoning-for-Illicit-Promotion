@@ -105,7 +105,10 @@ def get_telegram_contact(terms_all_list, tg_contact):
                 preds = list(softmax(np.mean(new_out, axis=0)))
                 print(key, pred[key], preds[np.argmax(preds)], preds)
         if result[1] != '' and len(result[1]) > 3 and result[1] != '@':
-            tg_contact[result[1]] = sentences_raw[n]
+            if result[1] not in tg_contact.keys():
+                tg_contact[result[1]] = [sentences_raw[n], 1]
+            else:
+                tg_contact[result[1]][1] += 1
 
 
 data = []
@@ -158,7 +161,11 @@ get_telegram_contact(terms_all_list, tg_contact)
 
 print(f'Finish extract telegram contact, get {len(tg_contact)}')
 with open('data/telegram_contact.txt', 'w', encoding='utf-8') as fp:
-    for item in tg_contact:
-        fp.write(str((item, tg_contact[item])))
-        fp.write('\n')
+    tg_list = []
+    for tg in tg_contact:
+        tg_list.append((tg, tg_contact[tg][0], tg_contact[tg][1]))
 
+    tg_list.sort(key=lambda x: -x[2])
+    for item in tg_list:
+        fp.write(str(item))
+        fp.write('\n')

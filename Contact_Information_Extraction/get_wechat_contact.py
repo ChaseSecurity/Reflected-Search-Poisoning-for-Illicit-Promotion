@@ -24,7 +24,7 @@ classify_model_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
 def get_wechat_contact(terms_all_list, wechat_contact):
     unicode_similar_nums = [
         '0ΟοσОо０Օօסه٥ھہە۵߀०০੦૦ଠ୦௦ం౦ಂ೦ംഠ൦ං๐໐ဝ၀ჿዐᴏᴑℴⲞⲟⵔ〇ꓳꬽﮦﮧﮨﮩﮪﮫﮬﮭﻩﻪﻫﻬ０Ｏｏ𐊒𐊫𐐄𐐬𐓂𐓪𐔖𑓐𑢵𑣈𑣗𑣠𝐎𝐨𝑂𝑜𝑶𝒐𝒪𝓞𝓸𝔒𝔬𝕆𝕠𝕺𝖔𝖮𝗈𝗢𝗼𝘖𝘰𝙊𝙤𝙾𝚘𝚶𝛐𝛔𝛰𝜊𝜎𝜪𝝄𝝈𝝤𝝾𝞂𝞞𝞸𝞼𝟎𝟘𝟢𝟬𝟶𞸤𞹤𞺄🯰',
-        '1|ıƖ１ǀɩɪ˛２ͺΙιІіӀӏ׀וןا١۱ߊᎥᛁιℐℑℓℹⅈⅠⅰⅼ∣⍳⏽Ⲓⵏꓲꙇꭵﺍﺎ１Ｉｉｌ￨𐊊𐌉𐌠𑣃𖼨𝐈𝐢𝐥𝐼𝑖𝑙𝑰𝒊𝒍𝒾𝓁𝓘𝓲𝓵𝔦𝔩𝕀𝕚𝕝𝕴𝖎𝖑𝖨𝗂𝗅𝗜𝗶𝗹𝘐𝘪𝘭𝙄𝙞𝙡𝙸𝚒𝚕𝚤𝚰𝛊𝛪𝜄𝜤𝜾𝝞𝝸𝞘𝞲𝟏𝟙𝟣𝟭𝟷𞣇𞸀𞺀🯱',
+        '1|ıƖ１ǀɩɪ˛ͺΙιІіӀӏ׀וןا١۱ߊᎥᛁιℐℑℓℹⅈⅠⅰⅼ∣⍳⏽Ⲓⵏꓲꙇꭵﺍﺎ１Ｉｉｌ￨𐊊𐌉𐌠𑣃𖼨𝐈𝐢𝐥𝐼𝑖𝑙𝑰𝒊𝒍𝒾𝓁𝓘𝓲𝓵𝔦𝔩𝕀𝕚𝕝𝕴𝖎𝖑𝖨𝗂𝗅𝗜𝗶𝗹𝘐𝘪𝘭𝙄𝙞𝙡𝙸𝚒𝚕𝚤𝚰𝛊𝛪𝜄𝜤𝜾𝝞𝝸𝞘𝞲𝟏𝟙𝟣𝟭𝟷𞣇𞸀𞺀🯱',
         '2ƧϨᒿꙄꛯꝚ２𝟐𝟚𝟤𝟮𝟸🯲',
         '3ƷȜЗӠⳌꝪꞫ３𑣊𖼻𝈆𝟑𝟛𝟥𝟯𝟹🯳',
         '4Ꮞ４𑢯𝟒𝟜𝟦𝟰𝟺🯴',
@@ -128,7 +128,10 @@ def get_wechat_contact(terms_all_list, wechat_contact):
                 print(key, pred[key], preds[np.argmax(preds)], preds)
         if result[1] != '' and len(result[1]) > 4:
             account = result[1]
-            wechat_contact[account] = sentences_raw[n]
+            if result[1] not in wechat_contact.keys():
+                wechat_contact[result[1]] = [sentences_raw[n], 1]
+            else:
+                wechat_contact[result[1]][1] += 1
 
 
 data = []
@@ -181,7 +184,11 @@ get_wechat_contact(terms_all_list, wechat_contact)
 
 print(f'Finish extract wechat contact, get {len(wechat_contact)}')
 with open('data/wechat_contact.txt', 'w', encoding='utf-8') as fp:
-    for item in wechat_contact:
-        fp.write(str((item, wechat_contact[item])))
-        fp.write('\n')
+    wechat_list = []
+    for wechat in wechat_contact:
+        wechat_list.append((wechat, wechat_contact[wechat][0], wechat_contact[wechat][1]))
 
+    wechat_list.sort(key=lambda x: -x[2])
+    for item in wechat_list:
+        fp.write(str(item))
+        fp.write('\n')
