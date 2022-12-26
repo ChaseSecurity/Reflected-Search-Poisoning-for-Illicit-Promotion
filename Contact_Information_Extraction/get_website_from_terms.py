@@ -24,6 +24,8 @@ with open('data/Baidu/positive_data_predicted.txt', 'r', encoding = 'utf-8') as 
 with open('data/Sogou/positive_data_predicted.txt', 'r', encoding = 'utf-8') as fp:
     data += fp.readlines()
 
+terms_with_website = set()
+
 terms = set()
 for item in data:
     term, link, kwd, timestamp, pagenum = eval(item)
@@ -40,9 +42,10 @@ with open('top_domain.csv', 'r', encoding='utf-8') as fp:
         except:
             pass
 
-url_pattern = r'[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?'
+url_pattern = r'[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})*\.[a-zA-Z]{2,62}'
 
-urls_origin = {}
+urls = {}
+dns_failed = set()
 
 def is_legal_url(url:str):
     dns = url.split('.')
@@ -57,41 +60,60 @@ def try_dns(url:str):
     except:
         return False
 
-for term in terms:
+def get_website(term, index):
     try:
-        url = re.search(url_pattern, term).group().lower() 
+        term_replaced = term.replace('·', '.')
+        # term_replaced = term_replaced.replace('-', '.')
+        term_replaced = term_replaced.replace('༚', '.')
+        term_replaced = term_replaced.replace('。', '.')
+        term_replaced = term_replaced.replace('点', '.')
+        term_replaced = term_replaced.replace('쩜', '.')
+        term_replaced = term_replaced.replace('․', '.')
+        term_replaced = term_replaced.replace('㏄', 'cc')
+        term_replaced = term_replaced.replace('⒑', '10.')
+        term_replaced = term_replaced.replace('⒒', '11.')
+        term_replaced = term_replaced.replace('⒓', '12.')
+        term_replaced = term_replaced.replace('⒔', '13.')
+        term_replaced = term_replaced.replace('⒕', '14.')
+        term_replaced = term_replaced.replace('⒖', '15.')
+        term_replaced = term_replaced.replace('⒗', '16.')
+        term_replaced = term_replaced.replace('⒘', '17.')
+        term_replaced = term_replaced.replace('⒙', '18.')
+        term_replaced = term_replaced.replace('⒚', '19.')
+        term_replaced = term_replaced.replace('⒛', '20.')
+        url = re.search(url_pattern, term_replaced).group().lower()
         if is_legal_url(url) and not term.startswith('http://') and not term.startswith('https://'):
             # Sometimes term is a whole url starts with http://, this is often a redirecting url embedding in origin url, 
             # instead of a SEO term. 
             # Actually this is a false positive term misclassified by our adaboost classifier. 
             # Jump over when extracting url from terms. 
-            if url not in urls_origin.keys():
-                urls_origin[url] = [term, 1]
-            else:
-                urls_origin[url][1] += 1
+            if url not in urls.keys() and url not in dns_failed:
+                isDnsSuccess =  try_dns(url)
+            lock.acquire()
+            if url not in dns_failed:
+                if url not in urls.keys():
+                    if isDnsSuccess:
+                        urls[url] = [term, 1]
+                        terms_with_website.add(term)
+                    else:
+                        dns_failed.add(url)
+                else:
+                    urls[url][1] += 1
+                    terms_with_website.add(term)
+            lock.release()
+        if index % 10000 == 1:
+            print('finish term ' + str(index))
     except:
-        pass
-
-logging.info(f'Get origin urls: {len(urls_origin)}')
-
-urls = {}
-
-def add_to_urls(url, index):
-    if try_dns(url):
-        lock.acquire()
-        urls[url] = urls_origin[url]
-        lock.release()
-        if (index + 1) % 10 == 0:
-            logging.info(f'Accept: {url}, for {index+1} in {len(urls_origin)}')
-    else:
-        if (index + 1) % 10 == 0:
-            logging.info(f'Refuse: {url}, for {index+1} in {len(urls_origin)}')
-
+        if index % 10000 == 1:
+            print('finish term ' + str(index))
+        return
 
 from concurrent.futures import ThreadPoolExecutor
-thread_pool = ThreadPoolExecutor(max_workers=100)
-for index, url in enumerate(urls_origin.keys()):
-    thread_pool.submit(add_to_urls, url, index)
+thread_pool = ThreadPoolExecutor(max_workers=20)
+    
+for index, term in enumerate(terms):
+    thread_pool.submit(get_website, term, index)
+
 
 thread_pool.shutdown(wait= True)
 with open('data/urls_from_terms.txt', 'w', encoding='utf-8') as fp:
@@ -104,5 +126,10 @@ with open('data/urls_from_terms.txt', 'w', encoding='utf-8') as fp:
         fp.write(str(data))
         fp.write('\n')
 
+
+with open('data/terms_with_website.txt', 'w', encoding='utf-8') as fp:
+    for item in terms_with_website:
+        fp.write(item)
+        fp.write('\n')
 
 pass
