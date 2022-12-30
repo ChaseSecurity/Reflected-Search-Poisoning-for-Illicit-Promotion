@@ -20,19 +20,20 @@ transformers_logger.setLevel(logging.WARNING)
 NER_model_path = '/data/jlxue/RBSEO_wechat_NER_train_model'
 classify_model_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
 
+terms_with_wechat = set()
 
 def get_wechat_contact(terms_all_list, wechat_contact):
     unicode_similar_nums = [
         '0ΟοσОо０Օօסه٥ھہە۵߀०০੦૦ଠ୦௦ం౦ಂ೦ംഠ൦ං๐໐ဝ၀ჿዐᴏᴑℴⲞⲟⵔ〇ꓳꬽﮦﮧﮨﮩﮪﮫﮬﮭﻩﻪﻫﻬ０Ｏｏ𐊒𐊫𐐄𐐬𐓂𐓪𐔖𑓐𑢵𑣈𑣗𑣠𝐎𝐨𝑂𝑜𝑶𝒐𝒪𝓞𝓸𝔒𝔬𝕆𝕠𝕺𝖔𝖮𝗈𝗢𝗼𝘖𝘰𝙊𝙤𝙾𝚘𝚶𝛐𝛔𝛰𝜊𝜎𝜪𝝄𝝈𝝤𝝾𝞂𝞞𝞸𝞼𝟎𝟘𝟢𝟬𝟶𞸤𞹤𞺄🯰',
-        '1|ıƖ１ǀɩɪ˛ͺΙιІіӀӏ׀וןا١۱ߊᎥᛁιℐℑℓℹⅈⅠⅰⅼ∣⍳⏽Ⲓⵏꓲꙇꭵﺍﺎ１Ｉｉｌ￨𐊊𐌉𐌠𑣃𖼨𝐈𝐢𝐥𝐼𝑖𝑙𝑰𝒊𝒍𝒾𝓁𝓘𝓲𝓵𝔦𝔩𝕀𝕚𝕝𝕴𝖎𝖑𝖨𝗂𝗅𝗜𝗶𝗹𝘐𝘪𝘭𝙄𝙞𝙡𝙸𝚒𝚕𝚤𝚰𝛊𝛪𝜄𝜤𝜾𝝞𝝸𝞘𝞲𝟏𝟙𝟣𝟭𝟷𞣇𞸀𞺀🯱',
-        '2ƧϨᒿꙄꛯꝚ２𝟐𝟚𝟤𝟮𝟸🯲',
-        '3ƷȜЗӠⳌꝪꞫ３𑣊𖼻𝈆𝟑𝟛𝟥𝟯𝟹🯳',
-        '4Ꮞ４𑢯𝟒𝟜𝟦𝟰𝟺🯴',
-        '5Ƽ５𑢻𝟓𝟝𝟧𝟱𝟻🯵',
-        '6бᏮ６Ⳓ６𑣕𝟔𝟞𝟨𝟲𝟼🯶',
-        '7７𐓒𑣆𝈒𝟕𝟟𝟩𝟳𝟽🯷',
-        '8Ȣȣ８৪੪ଃ８𐌚𝟖𝟠𝟪𝟴𝟾𞣋🯸',
-        '9৭੧୨൭ⳊꝮ９𑢬𑣌𑣖𝟗𝟡𝟫𝟵𝟿🯹'
+        '1|ı⒈Ɩ①１ǀɩɪ˛ͺΙιІіӀӏ׀וןا١۱ߊᎥᛁιℐℑℓℹⅈⅠⅰⅼ∣⍳⏽Ⲓⵏꓲꙇꭵﺍﺎ１Ｉｉｌ￨𐊊𐌉𐌠𑣃𖼨𝐈𝐢𝐥𝐼𝑖𝑙𝑰𝒊𝒍𝒾𝓁𝓘𝓲𝓵𝔦𝔩𝕀𝕚𝕝𝕴𝖎𝖑𝖨𝗂𝗅𝗜𝗶𝗹𝘐𝘪𝘭𝙄𝙞𝙡𝙸𝚒𝚕𝚤𝚰𝛊𝛪𝜄𝜤𝜾𝝞𝝸𝞘𝞲𝟏𝟙𝟣𝟭𝟷𞣇𞸀𞺀🯱',
+        '2ƧϨ⒉ᒿꙄ②ꛯꝚ２𝟐𝟚𝟤𝟮𝟸🯲',
+        '3ƷȜЗ③⒊ӠⳌꝪꞫ３𑣊𖼻𝈆𝟑𝟛𝟥𝟯𝟹🯳',
+        '4Ꮞ④⒋４𑢯𝟒𝟜𝟦𝟰𝟺🯴',
+        '5Ƽ⑤⒌５𑢻𝟓𝟝𝟧𝟱𝟻🯵',
+        '6⑥бᏮ⒍６Ⳓ６𑣕𝟔𝟞𝟨𝟲𝟼🯶',
+        '7⑦７⒎𐓒𑣆𝈒𝟕𝟟𝟩𝟳𝟽🯷',
+        '8Ȣȣ⑧⒏８৪੪ଃ８𐌚𝟖𝟠𝟪𝟴𝟾𞣋🯸',
+        '9৭੧⑨୨⒐൭ⳊꝮ９𑢬𑣌𑣖𝟗𝟡𝟫𝟵𝟿🯹'
     ]
     cuda_available = torch.cuda.is_available()
 
@@ -57,6 +58,18 @@ def get_wechat_contact(terms_all_list, wechat_contact):
                 if char in similar_num:
                     term = term.replace(char, str(simple_num))
                     break
+        term = term.replace('⑩', '10')
+        term = term.replace('⒑', '10')
+        term = term.replace('⒒', '11')
+        term = term.replace('⒓', '12')
+        term = term.replace('⒔', '13')
+        term = term.replace('⒕', '14')
+        term = term.replace('⒖', '15')
+        term = term.replace('⒗', '16')
+        term = term.replace('⒘', '17')
+        term = term.replace('⒙', '18')
+        term = term.replace('⒚', '19')
+        term = term.replace('⒛', '20')
         seg = jieba.cut(term)
         sentence = ''
         for s in seg:
@@ -130,8 +143,10 @@ def get_wechat_contact(terms_all_list, wechat_contact):
             account = result[1]
             if result[1] not in wechat_contact.keys():
                 wechat_contact[result[1]] = [sentences_raw[n], 1]
+                terms_with_wechat.add(sentences_raw[n])
             else:
                 wechat_contact[result[1]][1] += 1
+                terms_with_wechat.add(sentences_raw[n])
 
 
 data = []
@@ -159,8 +174,8 @@ for item in data:
 print(f'Finish Getting terms, get {len(terms_all)} terms')
 
 #-------------------------------------------------------------------------------------------------
-labels_list = ['website', 'wechat', 'qq', 'telegram', 'others']
-labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4}
+labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']
+labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4, 'telephone':5}
 terms_all_list = []
 wechat_contact = {}
 num = 0
@@ -191,4 +206,9 @@ with open('data/wechat_contact.txt', 'w', encoding='utf-8') as fp:
     wechat_list.sort(key=lambda x: -x[2])
     for item in wechat_list:
         fp.write(str(item))
+        fp.write('\n')
+
+with open('data/terms_with_wechat.txt', 'w', encoding='utf-8') as fp:
+    for item in terms_with_wechat:
+        fp.write(item)
         fp.write('\n')

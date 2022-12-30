@@ -10,6 +10,8 @@ from sklearn.metrics import f1_score,  accuracy_score
 from sklearn.model_selection import train_test_split
 import torch
 
+terms_with_telegram = set()
+
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -107,8 +109,10 @@ def get_telegram_contact(terms_all_list, tg_contact):
         if result[1] != '' and len(result[1]) > 3 and result[1] != '@':
             if result[1] not in tg_contact.keys():
                 tg_contact[result[1]] = [sentences_raw[n], 1]
+                terms_with_telegram.add(sentences_raw[n])
             else:
                 tg_contact[result[1]][1] += 1
+                terms_with_telegram.add(sentences_raw[n])
 
 
 data = []
@@ -136,8 +140,8 @@ for item in data:
 print(f'Finish Getting terms, get {len(terms_all)} terms')
 
 #-------------------------------------------------------------------------------------------------
-labels_list = ['website', 'wechat', 'qq', 'telegram', 'others']
-labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4}
+labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']
+labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4, 'telephone':5}
 terms_all_list = []
 tg_contact = {}
 num = 0
@@ -168,4 +172,9 @@ with open('data/telegram_contact.txt', 'w', encoding='utf-8') as fp:
     tg_list.sort(key=lambda x: -x[2])
     for item in tg_list:
         fp.write(str(item))
+        fp.write('\n')
+
+with open('data/terms_with_telegram.txt', 'w', encoding='utf-8') as fp:
+    for item in terms_with_telegram:
+        fp.write(item)
         fp.write('\n')
