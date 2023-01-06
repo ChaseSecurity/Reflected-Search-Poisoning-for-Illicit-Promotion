@@ -6,7 +6,7 @@ import csv
 from simpletransformers.ner import NERModel
 output_path = '/data/jlxue/RBSEO_wechat_NER_train_model'
 
-with open("wechat_NER_for_labeling.csv", mode="r", encoding="utf-8") as fp:
+with open("contact_NER_for_labeling_wechat.csv", mode="r", encoding="utf-8") as fp:
     reader = csv.reader(fp)
     header = next(reader)
     samples = []
@@ -22,7 +22,6 @@ with open("wechat_NER_for_labeling.csv", mode="r", encoding="utf-8") as fp:
 # Creating train_df  and eval_df for demonstration
 sample_df = pd.DataFrame(samples)
 sample_df.columns = ["sentence_id", "words", "labels"]
-train_df, eval_df = train_test_split(sample_df, test_size=0.2)
 
 # Create a NERModel
 labels = ['B-contact', 'I-contact', 'O']
@@ -33,16 +32,16 @@ model = NERModel(
     args={
         "reprocess_input_data": True,
         "overwrite_output_dir": True,
-        "num_train_epochs": 25,
+        "num_train_epochs": 15,
         "output_dir": output_path
     },
 )
 
 # # Train the model
-model.train_model(train_df)
+model.train_model(sample_df)
 
 # # Evaluate the model
-result, model_outputs, predictions = model.eval_model(eval_df)
+# result, model_outputs, predictions = model.eval_model(sample_df)
 
 
 # # Predictions on arbitary text strings
