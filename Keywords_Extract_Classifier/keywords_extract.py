@@ -9,10 +9,14 @@ from sklearn.ensemble import RandomForestClassifier
 logging.basicConfig(level=logging.INFO)
 warnings.filterwarnings("ignore")
 
-with open('random_forest_model_keywords.pickle', 'rb') as f:
+input_data_path = 'positive_promotions.txt'
+output_keywords_path = 'keywords_extracted.txt'
+model_path = 'random_forest_model_keywords.pickle'
+
+with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
-with open('positive_promotions.txt', 'r', encoding='utf-8') as fp:
+with open(input_data_path, 'r', encoding='utf-8') as fp:
     positive_terms = fp.read().splitlines()
 
 
@@ -43,7 +47,7 @@ for index, result in enumerate(predict_results):
 
 logging.info(f'Finish predict, with positive {len(positive_keywords_predicted)}, negative {len(negative_keywords_predicted)}')
 
-with open('keywords_extracted.txt', 'w', encoding='utf-8') as fp:
+with open(output_keywords_path, 'w', encoding='utf-8') as fp:
     for item in positive_keywords_predicted:
         fp.write(item)
         fp.write('\n')
