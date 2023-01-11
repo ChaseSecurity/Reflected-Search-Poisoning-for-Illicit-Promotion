@@ -8,7 +8,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.svm import LinearSVC
-import torch
 from util import *
 import pickle
 import warnings
