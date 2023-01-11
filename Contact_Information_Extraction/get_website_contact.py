@@ -3,7 +3,15 @@ import csv
 import dns.resolver
 import logging
 import threading
+from simpletransformers.classification import ClassificationModel, ClassificationArgs
+import numpy as np
+import pandas as pd
+import csv
+import torch
 lock = threading.Lock()
+
+USE_DNS = False
+classify_model_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
 
 logging.basicConfig(level=logging.INFO)
 
@@ -66,9 +74,12 @@ def get_website(term, index):
         # term_replaced = term_replaced.replace('-', '.')
         term_replaced = term_replaced.replace('༚', '.')
         term_replaced = term_replaced.replace('。', '.')
+        term_replaced = term_replaced.replace('ͺ', '.')
+        term_replaced = term_replaced.replace('¸', '.')
         term_replaced = term_replaced.replace('点', '.')
         term_replaced = term_replaced.replace('쩜', '.')
         term_replaced = term_replaced.replace('․', '.')
+        term_replaced = term_replaced.replace('、', '.')
         term_replaced = term_replaced.replace('㏄', 'cc')
         term_replaced = term_replaced.replace('⒑', '10.')
         term_replaced = term_replaced.replace('⒒', '11.')
@@ -82,13 +93,12 @@ def get_website(term, index):
         term_replaced = term_replaced.replace('⒚', '19.')
         term_replaced = term_replaced.replace('⒛', '20.')
         url = re.search(url_pattern, term_replaced).group().lower()
-        if is_legal_url(url) and not term.startswith('http://') and not term.startswith('https://'):
-            # Sometimes term is a whole url starts with http://, this is often a redirecting url embedding in origin url, 
-            # instead of a SEO term. 
-            # Actually this is a false positive term misclassified by our adaboost classifier. 
-            # Jump over when extracting url from terms. 
+        if is_legal_url(url):
             if url not in urls.keys() and url not in dns_failed:
-                isDnsSuccess =  try_dns(url)
+                if USE_DNS:
+                    isDnsSuccess =  try_dns(url)
+                else:
+                    isDnsSuccess =  True
             lock.acquire()
             if url not in dns_failed:
                 if url not in urls.keys():
@@ -101,35 +111,89 @@ def get_website(term, index):
                     urls[url][1] += 1
                     terms_with_website.add(term)
             lock.release()
-        if index % 10000 == 1:
+        if index % 10000 == 1 and USE_DNS:
             print('finish term ' + str(index))
     except:
-        if index % 10000 == 1:
+        if index % 10000 == 1 and USE_DNS:
             print('finish term ' + str(index))
         return
 
 from concurrent.futures import ThreadPoolExecutor
 thread_pool = ThreadPoolExecutor(max_workers=20)
-    
-for index, term in enumerate(terms):
-    thread_pool.submit(get_website, term, index)
 
+
+labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']
+labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4, 'telephone':5}
+
+def get_website_contact(terms_all_list):
+    cuda_available = torch.cuda.is_available()
+
+    args = ClassificationArgs(eval_batch_size = 32, use_multiprocessing_for_evaluation=False)
+    model = ClassificationModel('roberta', classify_model_path, num_labels=len(labels_list), use_cuda=cuda_available, args = args)
+
+    website_terms = []
+    predictions, raw_outputs = model.predict(terms_all_list)
+
+    for index, term in enumerate(terms_all_list):
+        if labels_list[predictions[index]] == 'website':
+            website_terms.append(term)
+
+    print(f'Finish contact classification, get website term {len(website_terms)}')
+
+    for index, term in enumerate(website_terms):
+        thread_pool.submit(get_website, term, index)
+
+num = 0
+index_term = 0
+terms_all_list = []
+for item in terms:
+    num += 1
+    index_term += 1
+    terms_all_list.append(item)
+    if num >= 50000:
+        print(f'Get {len(terms_all_list)} positive terms')
+        get_website_contact(terms_all_list)
+        logging.info(f'Finished terms {index_term} of {len(terms)} for extracting website contact, get {len(urls)} website contacts')
+        num = 0
+        terms_all_list = []
+
+print(f'Get {len(terms_all_list)} positive terms')
+get_website_contact(terms_all_list)
 
 thread_pool.shutdown(wait= True)
-with open('data/urls_from_terms.txt', 'w', encoding='utf-8') as fp:
-    url_list = []
-    for url in urls:
-        url_list.append((url, urls[url][0], urls[url][1]))
-
-    url_list.sort(key=lambda x: -x[2])
-    for data in url_list:
-        fp.write(str(data))
-        fp.write('\n')
 
 
-with open('data/terms_with_website.txt', 'w', encoding='utf-8') as fp:
-    for item in terms_with_website:
-        fp.write(item)
-        fp.write('\n')
+if USE_DNS:
+    with open('data/urls_from_terms.txt', 'w', encoding='utf-8') as fp:
+        url_list = []
+        for url in urls:
+            url_list.append((url, urls[url][0], urls[url][1]))
+
+        url_list.sort(key=lambda x: -x[2])
+        for data in url_list:
+            fp.write(str(data))
+            fp.write('\n')
+else:
+    with open('data/urls_from_terms_without_dns.txt', 'w', encoding='utf-8') as fp:
+        url_list = []
+        for url in urls:
+            url_list.append((url, urls[url][0], urls[url][1]))
+
+        url_list.sort(key=lambda x: -x[2])
+        for data in url_list:
+            fp.write(str(data))
+            fp.write('\n')
+
+
+if USE_DNS:
+    with open('data/terms_with_website.txt', 'w', encoding='utf-8') as fp:
+        for item in terms_with_website:
+            fp.write(item)
+            fp.write('\n')
+else:
+    with open('data/terms_with_website_without_dns.txt', 'w', encoding='utf-8') as fp:
+        for item in terms_with_website:
+            fp.write(item)
+            fp.write('\n')
 
 pass

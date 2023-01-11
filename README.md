@@ -16,20 +16,6 @@ contact_methodology = {telegram, website, qq, WeChat, other}
 
 An AdaBoost classifier with 100 estimiters, trained with 2004 positive data (SEO terms) and 1245 negative data (common websites). 
 
-Trying to predict 1,503,817 terms and get 923,665 positive terms and 580,206 negative terms. Sample 3000 positive predicted data and 3000 negative predicted data, then evaluate the performance. 
-
-FN = 32
-
-TN = 2968
-
-FP = 90
-
-TP = 2910
-
-precision = 97%
-
-recall = 98.91%
-
 ## Keywords Extract Classifier
 
 A random forest classifier to judge if a segment of an SEO term is a contact information field. 

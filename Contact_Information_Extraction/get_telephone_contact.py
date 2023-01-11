@@ -25,7 +25,7 @@ terms_with_telephone = set()
 
 def get_telephone_contact(terms_all_list, telephone_contact):
     unicode_similar_nums = [
-        '0OoΟοσОо０Օօסه٥ھہە۵߀०০੦૦ଠ୦௦ం౦ಂ೦ംഠ൦ං๐໐ဝ၀ჿዐᴏᴑℴⲞⲟⵔ〇ꓳꬽﮦﮧﮨﮩﮪﮫﮬﮭﻩﻪﻫﻬ０Ｏｏ𐊒𐊫𐐄𐐬𐓂𐓪𐔖𑓐𑢵𑣈𑣗𑣠𝐎𝐨𝑂𝑜𝑶𝒐𝒪𝓞𝓸𝔒𝔬𝕆𝕠𝕺𝖔𝖮𝗈𝗢𝗼𝘖𝘰𝙊𝙤𝙾𝚘𝚶𝛐𝛔𝛰𝜊𝜎𝜪𝝄𝝈𝝤𝝾𝞂𝞞𝞸𝞼𝟎𝟘𝟢𝟬𝟶𞸤𞹤𞺄🯰',
+        '0OoΟÒοσОо０ՕØΘօסه٥ھہە۵߀०০੦૦ଠ୦௦ం౦ಂ೦ംഠ൦ං๐໐ဝ၀ჿዐᴏᴑℴⲞⲟⵔ〇ꓳꬽﮦﮧﮨﮩﮪﮫﮬﮭﻩﻪﻫﻬ０Ｏｏ𐊒𐊫𐐄𐐬𐓂𐓪𐔖𑓐𑢵𑣈𑣗𑣠𝐎𝐨𝑂𝑜𝑶𝒐𝒪𝓞𝓸𝔒𝔬𝕆𝕠𝕺𝖔𝖮𝗈𝗢𝗼𝘖𝘰𝙊𝙤𝙾𝚘𝚶𝛐𝛔𝛰𝜊𝜎𝜪𝝄𝝈𝝤𝝾𝞂𝞞𝞸𝞼𝟎𝟘𝟢𝟬𝟶𞸤𞹤𞺄🯰',
         '1Iil|ı⒈Ɩ①１ǀɩɪ˛ͺΙιІіӀӏ׀וןا١۱ߊᎥᛁιℐℑℓℹⅈⅠⅰⅼ∣⍳⏽Ⲓⵏꓲꙇꭵﺍﺎ１Ｉｉｌ￨𐊊𐌉𐌠𑣃𖼨𝐈𝐢𝐥𝐼𝑖𝑙𝑰𝒊𝒍𝒾𝓁𝓘𝓲𝓵𝔦𝔩𝕀𝕚𝕝𝕴𝖎𝖑𝖨𝗂𝗅𝗜𝗶𝗹𝘐𝘪𝘭𝙄𝙞𝙡𝙸𝚒𝚕𝚤𝚰𝛊𝛪𝜄𝜤𝜾𝝞𝝸𝞘𝞲𝟏𝟙𝟣𝟭𝟷𞣇𞸀𞺀🯱',
         '2ƧϨ⒉ᒿꙄ②ꛯꝚ２𝟐𝟚𝟤𝟮𝟸🯲',
         '3ƷȜЗ③⒊ӠⳌꝪꞫ３𑣊𖼻𝈆𝟑𝟛𝟥𝟯𝟹🯳',
@@ -67,6 +67,8 @@ def get_telephone_contact(terms_all_list, telephone_contact):
         term = term.replace('⒙', '18')
         term = term.replace('⒚', '19')
         term = term.replace('⒛', '20')
+        term = term.replace('.', '')
+        term = term.replace(' ', '')
         for char in term:
             for simple_num, similar_num in enumerate(unicode_similar_nums):
                 if char in similar_num:
@@ -76,7 +78,7 @@ def get_telephone_contact(terms_all_list, telephone_contact):
         compileX = re.compile(r"\d+")
         num_result = compileX.findall(term)
         for nums in num_result:
-            if len(nums) >= 7 and len(nums) <= 12:
+            if len(nums) == 10 or len(nums) == 11:
                 if nums not in telephone_contact.keys():
                     telephone_contact[nums] = [term_origin, 1]
                     terms_with_telephone.add(term_origin)

@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 transformers_logger = logging.getLogger("transformers")
 transformers_logger.setLevel(logging.WARNING)
 
-NER_model_path = '/data/jlxue/RBSEO_NER_train_model'
+NER_model_path = '/data/jlxue/RBSEO_telegram_NER_train_model'
 classify_model_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
 
 
@@ -105,8 +105,11 @@ def get_telegram_contact(terms_all_list, tg_contact):
                 key = list(pred.keys())[0]
                 new_out = out[key]
                 preds = list(softmax(np.mean(new_out, axis=0)))
-                print(key, pred[key], preds[np.argmax(preds)], preds)
+                print(key, pred[key], preds[np.argmax(preds)], preds, sep='\t')
         if result[1] != '' and len(result[1]) > 3 and result[1] != '@':
+            result[1] = result[1].replace('+', '')
+            result[1] = result[1].replace('@', '')
+            result[1] = result[1].lower()
             if result[1] not in tg_contact.keys():
                 tg_contact[result[1]] = [sentences_raw[n], 1]
                 terms_with_telegram.add(sentences_raw[n])
