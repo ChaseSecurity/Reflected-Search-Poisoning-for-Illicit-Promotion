@@ -9,6 +9,7 @@ import logging
 from sklearn.metrics import f1_score,  accuracy_score
 from sklearn.model_selection import train_test_split
 import torch
+import re
 
 terms_with_telegram = set()
 
@@ -107,8 +108,7 @@ def get_telegram_contact(terms_all_list, tg_contact):
                 preds = list(softmax(np.mean(new_out, axis=0)))
                 print(key, pred[key], preds[np.argmax(preds)], preds, sep='\t')
         if result[1] != '' and len(result[1]) > 3 and result[1] != '@':
-            result[1] = result[1].replace('+', '')
-            result[1] = result[1].replace('@', '')
+            result[1] = re.sub(r'[^a-zA-Z0-9_]', '', result[1])
             result[1] = result[1].lower()
             if result[1] not in tg_contact.keys():
                 tg_contact[result[1]] = [sentences_raw[n], 1]
