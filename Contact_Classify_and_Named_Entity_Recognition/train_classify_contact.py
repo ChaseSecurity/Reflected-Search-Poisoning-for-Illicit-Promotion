@@ -4,6 +4,7 @@ Follow tutorials listed below
 """
 
 output_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
+data_path = "labeled_contact.csv"
 
 from simpletransformers.classification import ClassificationModel, ClassificationArgs
 import pandas as pd
@@ -18,17 +19,18 @@ transformers_logger.setLevel(logging.WARNING)
 
 
 #--------------------------Read Classes---------------------------
-labels_list = ['website', 'wechat', 'qq', 'telegram', 'others']
-labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4}
+labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']
+labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4, 'telephone':5}
 
 logging.info(f"Finish getting labels, get {len(labels_list)} classes. ")
 
 #---------------------------------Get Train Set---------------------------
-with open("labeled_contact.csv", mode="r", encoding="utf-8") as fp:
+with open(data_path, mode="r", encoding="utf-8") as fp:
     reader = csv.reader(fp)
+    header = next(reader)
     samples = []
     for row in reader:
-        samples.append((row[0], labels_dict[row[1]]))
+        samples.append((row[0], labels_dict[row[1].lower()]))
 
 logging.info(f"Loaded {len(samples)}")
 
@@ -39,7 +41,7 @@ transformers_logger.setLevel(logging.WARNING)
 
 sample_df = pd.DataFrame(samples)
 sample_df.columns = ["text", "labels"]
-train_df, eval_df = train_test_split(sample_df, test_size=0.2)
+train_df, eval_df = train_test_split(sample_df, test_size=0.05)
 
 # Optional model configuration
 cuda_available = torch.cuda.is_available()
