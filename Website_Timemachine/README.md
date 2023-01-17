@@ -15,7 +15,7 @@ playwright install
 
 ## Usage
 
-Help
+### Help
 
 ```bash
 # python time_machine.py  -h
@@ -49,7 +49,14 @@ python time_machine.py DOMAIN_NAME -id TASK_TAG RESULT_DIR
 
 
 
-[ Updates ]
+### Output
 
-The redirect path of each URL now can be found in `result_stats.json` in the RESULT_DIR and `hops.txt` in each DOMAIN_DIR
+The running status can be found in `result_stats_{TASK_TAG}.json` in RESULT_DIR, each line records the running result of one url, and it is formatted as follows:
 
+`{"domain": ..., "is_success": ..., "err_message": ..., "result_basedir": ..., "provider": ..., "has_hops": ..., "hops": ...}`
+
+The `is_success` field records whether the url page was successfully crawled. 
+
+If one url fails to be crawled due to an exception in the process, the reason for the error can be found in the `err_message` field.
+
+If one url succeeds to be crawled, in the RESULT_DIR/`provider`/`result_basedir` folder, you can find the `page_screenshot.png` which is the screenshot of landing page, the `test.har` file which logs a web browser’s interaction with a site, and the `hops.txt` which records the whole redirection path.
