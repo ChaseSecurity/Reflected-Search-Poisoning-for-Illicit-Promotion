@@ -37,3 +37,13 @@ Now finished extracting websites, and telegram accounts.
 ## Website Timemachine
 
 A time machine to crawl websites extracted from SEO terms. 
+
+## Telegram Timemachine
+
+A time machine to crawl telegram accounts extracted from SEO terms.
+
+## Website Screenshot Classifier
+
+Classify a website using a multimodal classifier based on the screenshot of its landing page output by `time_machine.py` and the text content extracted from it by OCR, to identify the cybercrime activity of the website.
+
+class = {(Fake) Certificate & Account & Merchandise, Drug, Financial related, Gambling, Benign, Hacker & Crime, Sales & Advertisement, SEO, Sex & Porn, Unknown, Redirection Page, Domain Expired}
