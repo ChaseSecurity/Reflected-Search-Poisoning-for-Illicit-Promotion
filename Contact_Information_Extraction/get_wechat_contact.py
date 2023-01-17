@@ -31,6 +31,24 @@ def numeric_num(term):
             cnt += 1
     return cnt
 
+
+def postprocess_wechat(im:str):
+    im = im.lower()
+    im_split = im.split('-')
+    im_final = ''
+    for item in im_split:
+        if numeric_num(item) >= 7:
+            im_final = item
+            break
+        else:
+            im_final += item
+    im_final = re.sub(r'[^a-zA-Z0-9_]', '', im_final)
+    im_final = im_final.replace('vx', '')
+    im_final = im_final.replace('wechat', '')
+    if numeric_num(im_final) >= 7:
+        im_final = re.sub(r'[a-zA-Z_]', '', im_final)
+    return im_final
+
 def get_wechat_contact(terms_all_list, wechat_contact):
     unicode_similar_nums = [ 
         '0ΟοσОо０Օօסه٥ھ⓿ہە۵߀०০੦૦ଠ୦௦ం౦ಂ೦ംഠ൦ං๐໐ဝ၀ჿዐᴏᴑℴⲞⲟⵔ〇ꓳꬽﮦﮧﮨﮩﮪﮫﮬﮭﻩﻪﻫﻬ０Ｏｏ𐊒𐊫𐐄𐐬𐓂𐓪𐔖𑓐𑢵𑣈𑣗𑣠𝐎𝐨𝑂𝑜𝑶𝒐𝒪𝓞𝓸𝔒𝔬𝕆𝕠𝕺𝖔𝖮𝗈𝗢𝗼𝘖𝘰𝙊𝙤𝙾𝚘𝚶𝛐𝛔𝛰𝜊𝜎𝜪𝝄𝝈𝝤𝝾𝞂𝞞𝞸𝞼𝟎𝟘𝟢𝟬𝟶𞸤𞹤𞺄🯰',
@@ -150,12 +168,7 @@ def get_wechat_contact(terms_all_list, wechat_contact):
                 preds = list(softmax(np.mean(new_out, axis=0)))
                 print(key, pred[key], preds[np.argmax(preds)], preds)
         if result[1] != '' and len(result[1]) > 4:
-            result[1] = result[1].lower()
-            result[1] = re.sub(r'[^a-zA-Z0-9_]', '', result[1])
-            result[1] = result[1].replace('vx', '')
-            result[1] = result[1].replace('wechat', '')
-            if numeric_num(result[1]) >= 7:
-                result[1] = re.sub(r'[a-zA-Z_]', '', result[1])
+            result[1] = postprocess_wechat(result[1])
             if result[1] not in wechat_contact.keys():
                 wechat_contact[result[1]] = [sentences_raw[n], 1]
                 terms_with_wechat.add(sentences_raw[n])
@@ -206,6 +219,15 @@ for item in terms_all:
         logging.info(f'Finished terms {index_term} of {len(terms_all)} for extracting wechat contact, get {len(wechat_contact)} wechat contacts')
         num = 0
         terms_all_list = []
+        with open('data/wechat_contact.txt', 'w', encoding='utf-8') as fp:
+            wechat_list = []
+            for wechat in wechat_contact:
+                wechat_list.append((wechat, wechat_contact[wechat][0], wechat_contact[wechat][1]))
+
+            wechat_list.sort(key=lambda x: -x[2])
+            for item in wechat_list:
+                fp.write(str(item))
+                fp.write('\n')
 
 
 print(f'Get {len(terms_all_list)} positive terms')
