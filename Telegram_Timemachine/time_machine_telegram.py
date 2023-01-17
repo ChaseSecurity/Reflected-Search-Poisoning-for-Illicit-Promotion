@@ -12,8 +12,8 @@ import datetime
 
 class TelegramTimeMachine:
     # get from 'https://my.telegram.org'
-    api_id = 19367738
-    api_hash = '145e319508dba03a5f5a7a903fd667c5'
+    api_id = 0000000
+    api_hash = 'xxxxxxxxxxxxxx'
     
     client = TelegramClient('anon', api_id, api_hash)
     today = datetime.date.today()
