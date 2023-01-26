@@ -22,7 +22,7 @@ NER_model_path = '/data/jlxue/RBSEO_NER_train_model'
 classify_model_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
 
 terms_with_qq = set()
-
+terms_extracted = set()
 def get_qq_contact(terms_all_list, qq_contact):
     unicode_similar_nums = [
         '0OoΟÒοσОо０ՕØΘօסه٥ھہە۵߀०০੦૦ଠ୦௦ం౦ಂ೦ംഠ൦ං๐໐ဝ၀ჿዐᴏᴑℴⲞⲟⵔ〇ꓳꬽﮦﮧﮨﮩﮪﮫﮬﮭﻩﻪﻫﻬ０Ｏｏ𐊒𐊫𐐄𐐬𐓂𐓪𐔖𑓐𑢵𑣈𑣗𑣠𝐎𝐨𝑂𝑜𝑶𝒐𝒪𝓞𝓸𝔒𝔬𝕆𝕠𝕺𝖔𝖮𝗈𝗢𝗼𝘖𝘰𝙊𝙤𝙾𝚘𝚶𝛐𝛔𝛰𝜊𝜎𝜪𝝄𝝈𝝤𝝾𝞂𝞞𝞸𝞼𝟎𝟘𝟢𝟬𝟶𞸤𞹤𞺄🯰',
@@ -84,9 +84,11 @@ def get_qq_contact(terms_all_list, qq_contact):
                 if nums not in qq_contact.keys():
                     qq_contact[nums] = [term_origin, 1]
                     terms_with_qq.add(term_origin)
+                    terms_extracted.add((term_origin, nums))
                 else:
                     qq_contact[nums][1] += 1
                     terms_with_qq.add(term_origin)
+                    terms_extracted.add((term_origin, nums))
                 break
     #-------------------------------------------------------------------------------------------------
     
@@ -115,7 +117,7 @@ for item in data:
     terms_all.add(term)
 
 print(f'Finish Getting terms, get {len(terms_all)} terms')
-
+data = []
 #-------------------------------------------------------------------------------------------------
 labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']
 labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4, 'telephone':5}
@@ -154,4 +156,9 @@ with open('data/qq_contact.txt', 'w', encoding='utf-8') as fp:
 with open('data/terms_with_qq.txt', 'w', encoding='utf-8') as fp:
     for item in terms_with_qq:
         fp.write(item)
+        fp.write('\n')
+
+with open('data/terms_extracted_qq.txt', 'w', encoding='utf-8') as fp:
+    for item in terms_extracted:
+        fp.write(str(item))
         fp.write('\n')

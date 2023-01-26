@@ -132,3 +132,7 @@ dmypy.json
 runs/
 outputs/
 cache_dir/
+eval.py
+cross_validation.py
+negative_data_for_eval.txt
+positive_data_for_eval.txt

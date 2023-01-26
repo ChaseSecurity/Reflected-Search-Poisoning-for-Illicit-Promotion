@@ -22,7 +22,7 @@ NER_model_path = '/data/jlxue/RBSEO_wechat_NER_train_model'
 classify_model_path = '/data/jlxue/RBSEO_contact_classifier_train_model'
 
 terms_with_wechat = set()
-
+terms_extracted = set()
 
 def numeric_num(term):
     cnt = 0
@@ -172,9 +172,11 @@ def get_wechat_contact(terms_all_list, wechat_contact):
             if result[1] not in wechat_contact.keys():
                 wechat_contact[result[1]] = [sentences_raw[n], 1]
                 terms_with_wechat.add(sentences_raw[n])
+                terms_extracted.add((sentences_raw[n], result[1]))
             else:
                 wechat_contact[result[1]][1] += 1
                 terms_with_wechat.add(sentences_raw[n])
+                terms_extracted.add((sentences_raw[n], result[1]))
 
 
 data = []
@@ -200,7 +202,7 @@ for item in data:
     terms_all.add(term)
 
 print(f'Finish Getting terms, get {len(terms_all)} terms')
-
+data = []
 #-------------------------------------------------------------------------------------------------
 labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']
 labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4, 'telephone':5}
@@ -248,4 +250,9 @@ with open('data/wechat_contact.txt', 'w', encoding='utf-8') as fp:
 with open('data/terms_with_wechat.txt', 'w', encoding='utf-8') as fp:
     for item in terms_with_wechat:
         fp.write(item)
+        fp.write('\n')
+
+with open('data/terms_extracted_wechat.txt', 'w', encoding='utf-8') as fp:
+    for item in terms_extracted:
+        fp.write(str(item))
         fp.write('\n')
