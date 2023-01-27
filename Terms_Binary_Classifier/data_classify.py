@@ -8,12 +8,14 @@ from urllib import parse
 logging.basicConfig(level=logging.INFO)
 warnings.filterwarnings("ignore")
 
-def isFreeRide(title, link):
-    if ('%' in link) and (link.startswith('http')):
-        if parse.urlparse(link).hostname == title:
+def isFreeRide(title:str, link:str):
+    if link.startswith('http'):
+        if parse.urlparse(link).hostname == title.split(':')[0]:
             return False
-        else:
+        elif '%' in link or not link.isascii():
             return True
+        else:
+            return False
     else:
         return False
 
