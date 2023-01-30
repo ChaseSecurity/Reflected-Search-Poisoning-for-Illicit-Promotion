@@ -3,6 +3,8 @@ from random import randint
 import warnings
 import logging
 import threading
+import pickle
+from classifier import *
 lock = threading.Lock()
 
 logging.basicConfig(level=logging.INFO)
@@ -10,6 +12,8 @@ logging.basicConfig(level=logging.INFO)
 use_browser = False
 use_proxy = False
 warnings.filterwarnings("ignore")
+with open('model/adaboost_model.pickle', 'rb') as f:
+    model = pickle.load(f)
 
 def search_a_contact(contact, port):
     proxyPort = port
@@ -38,18 +42,47 @@ def search_a_contact(contact, port):
         if not Have_Result:
             break
 
+    data_terms = []
+    all_data = [str(result) for result in results_output]
+    positive_data_predicted = []
+    negative_data_predicted = []
+    for item in all_data:
+        data_terms.append(eval(item)[0])
+
+    if len(all_data) != 0:
+        predict_results = Predict_With_Model(model, data_terms)
+
+        for index, result in enumerate(predict_results):
+            turp = eval(all_data[index])
+            term = turp[0]
+            link = turp[1]
+            if result == 1 and isFreeRide(term, link):
+                positive_data_predicted.append(all_data[index])
+            else:
+                negative_data_predicted.append(all_data[index])
+
     lock.acquire()
+    with open('result/negative_data_predicted.txt', 'a', encoding='utf-8') as fp:
+        for item in negative_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
+    with open('result/positive_data_predicted.txt', 'a', encoding='utf-8') as fp:
+        for item in positive_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
     with open('result/result_from_contact.txt', 'a', encoding='utf-8') as fp:
         result_len = len(results_output)
         for result in results_output:
             fp.write(str(result))
             fp.write('\n')
     lock.release()
-    print('Finish contact info: ' + contact + ' result num = ' + str(result_len))
+    print(f'Finish contact info: {contact}, result num = {result_len}, positive num = {len(positive_data_predicted)}')
 
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-max_pool = 150
+max_pool = 100
 thread_pool = ThreadPoolExecutor(max_workers=max_pool)
 if __name__ == '__main__':
     with open('result/contact.txt', 'r', encoding='utf-8') as fp:

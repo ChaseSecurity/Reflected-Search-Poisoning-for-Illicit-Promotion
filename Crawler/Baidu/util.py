@@ -98,7 +98,7 @@ def parse_html(page_source, results: set , results_output:set, keyword, page_num
                 link = get_real_address(anchor['href'])
                 title = get_kwd_from_url(link)
                 timestump = time.time()
-                if link.startswith('http'):
+                if link.startswith('http') and 'wappass.baidu.com' not in link and 'image.baidu.com' not in link:
                     if (title, link) not in results:
                         results_output.add((title, link, keyword, page_num, timestump))
                         results.add((title, link))

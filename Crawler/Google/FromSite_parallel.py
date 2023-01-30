@@ -43,20 +43,36 @@ def search_a_site(site, port):
         start_num += 10
         page_source = ''
 
-    # If result len < 50, then try to add some keywords
-    if len(result_list) > 0:
-        data_terms = []
-        for item in result_list:
-            data_terms.append(item[0])
-        predict_results = Predict_With_Model(model, data_terms)
-        positive_result_num = 0
-        for result in predict_results:
-            if result == 1:
-                positive_result_num += 1
-    else:
-        positive_result_num = 0
+    data_terms = []
+    all_data = [str(result) for result in result_list]
+    positive_data_predicted = []
+    negative_data_predicted = []
+    for item in all_data:
+        data_terms.append(eval(item)[0])
 
+    if len(all_data) != 0:
+        predict_results = Predict_With_Model(model, data_terms)
+
+        for index, result in enumerate(predict_results):
+            turp = eval(all_data[index])
+            term = turp[0]
+            link = turp[1]
+            if result == 1 and isFreeRide(term, link):
+                positive_data_predicted.append(all_data[index])
+            else:
+                negative_data_predicted.append(all_data[index])
+    positive_result_num = len(positive_data_predicted)
     lock.acquire()
+    with open('result/negative_data_predicted_fromsite.txt', 'a', encoding='utf-8') as fp:
+        for item in negative_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
+    with open('result/positive_data_predicted_fromsite.txt', 'a', encoding='utf-8') as fp:
+        for item in positive_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
     with open('result/result_from_site.txt', 'a', encoding='utf-8') as fp:
         result_len = len(result_list)
         for i in range(result_len):
@@ -64,6 +80,7 @@ def search_a_site(site, port):
             fp.write('\n')
     print('Finish crawling freerided site: ' + site + ' result num = ' + str(result_len))
     lock.release()
+    # If result len < 50, then try to add some keywords
     if positive_result_num < 50:
         keywords = ['微', '薇', '扣', 'qq', 'vx', 'tg', 'telegram',  '飞机', '@', '网', '复制']
         for i, keyword in enumerate(keywords):
@@ -99,7 +116,36 @@ def search_a_site_with_keywords(site, keyword, port):
         still_Have_Result = parse_html(page_source, result_list, keyword+'+site:'+insite_SE, start_num // 10)
         start_num += 10
         page_source = ''
+    data_terms = []
+    all_data = [str(result) for result in result_list]
+    positive_data_predicted = []
+    negative_data_predicted = []
+    for item in all_data:
+        data_terms.append(eval(item)[0])
+
+    if len(all_data) != 0:
+        predict_results = Predict_With_Model(model, data_terms)
+
+        for index, result in enumerate(predict_results):
+            turp = eval(all_data[index])
+            term = turp[0]
+            link = turp[1]
+            if result == 1 and isFreeRide(term, link):
+                positive_data_predicted.append(all_data[index])
+            else:
+                negative_data_predicted.append(all_data[index])
+    positive_result_num = len(positive_data_predicted)
     lock.acquire()
+    with open('result/negative_data_predicted_fromsite.txt', 'a', encoding='utf-8') as fp:
+        for item in negative_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
+    with open('result/positive_data_predicted_fromsite.txt', 'a', encoding='utf-8') as fp:
+        for item in positive_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
     with open('result/result_from_site.txt', 'a', encoding='utf-8') as fp:
         result_len = len(result_list)
         for i in range(result_len):
