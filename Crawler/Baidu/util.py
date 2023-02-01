@@ -64,6 +64,8 @@ def get_html_using_requests(url, proxies):
 
 
 def isFreeRide(title:str, link:str):
+    if title.startswith('http://') or title.startswith('https://'):
+        return False
     if link.startswith('http'):
         if parse.urlparse(link).hostname == title.split(':')[0]:
             return False

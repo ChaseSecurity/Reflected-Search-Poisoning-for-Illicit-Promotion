@@ -9,6 +9,8 @@ logging.basicConfig(level=logging.INFO)
 warnings.filterwarnings("ignore")
 
 def isFreeRide(title:str, link:str):
+    if title.startswith('http://') or title.startswith('https://'):
+        return False
     if link.startswith('http'):
         if parse.urlparse(link).hostname == title.split(':')[0]:
             return False
