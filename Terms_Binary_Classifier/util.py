@@ -50,7 +50,7 @@ def brackets_num(term):
     return cnt
 
 def has_suffix(term):
-    suffix = ['.html', '.htm', '.php', '.pdf', '.jpg', '.jpeg', '.png']
+    suffix = ['.html', '.shtml', '.htm', '.php', '.pdf', '.jpg', '.jpeg', '.png', '.xlsx', '.doxx', '.pptx', '.xml']
     for s in suffix:
         if s in term:
             return 1
