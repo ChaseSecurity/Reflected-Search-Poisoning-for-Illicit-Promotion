@@ -44,23 +44,26 @@ def search_a_site(site, port):
         page_source = ''
 
     data_terms = []
-    all_data = [str(result) for result in result_list]
+    all_data_for_classify = []
     positive_data_predicted = []
     negative_data_predicted = []
-    for item in all_data:
+    for result in result_list:
+        if isFreeRide(result[0], result[1]):
+            all_data_for_classify.append(str(result))
+        else:
+            negative_data_predicted.append(str(result))
+            
+    for item in all_data_for_classify:
         data_terms.append(eval(item)[0])
 
-    if len(all_data) != 0:
+    if len(all_data_for_classify) != 0:
         predict_results = Predict_With_Model(model, data_terms)
 
         for index, result in enumerate(predict_results):
-            turp = eval(all_data[index])
-            term = turp[0]
-            link = turp[1]
-            if result == 1 and isFreeRide(term, link):
-                positive_data_predicted.append(all_data[index])
+            if result == 1:
+                positive_data_predicted.append(all_data_for_classify[index])
             else:
-                negative_data_predicted.append(all_data[index])
+                negative_data_predicted.append(all_data_for_classify[index])
     positive_result_num = len(positive_data_predicted)
     lock.acquire()
     with open('result/negative_data_predicted_fromsite.txt', 'a', encoding='utf-8') as fp:
@@ -117,23 +120,26 @@ def search_a_site_with_keywords(site, keyword, port):
         start_num += 10
         page_source = ''
     data_terms = []
-    all_data = [str(result) for result in result_list]
+    all_data_for_classify = []
     positive_data_predicted = []
     negative_data_predicted = []
-    for item in all_data:
+    for result in result_list:
+        if isFreeRide(result[0], result[1]):
+            all_data_for_classify.append(str(result))
+        else:
+            negative_data_predicted.append(str(result))
+    
+    for item in all_data_for_classify:
         data_terms.append(eval(item)[0])
 
-    if len(all_data) != 0:
+    if len(all_data_for_classify) != 0:
         predict_results = Predict_With_Model(model, data_terms)
 
         for index, result in enumerate(predict_results):
-            turp = eval(all_data[index])
-            term = turp[0]
-            link = turp[1]
-            if result == 1 and isFreeRide(term, link):
-                positive_data_predicted.append(all_data[index])
+            if result == 1:
+                positive_data_predicted.append(all_data_for_classify[index])
             else:
-                negative_data_predicted.append(all_data[index])
+                negative_data_predicted.append(all_data_for_classify[index])
     positive_result_num = len(positive_data_predicted)
     lock.acquire()
     with open('result/negative_data_predicted_fromsite.txt', 'a', encoding='utf-8') as fp:
