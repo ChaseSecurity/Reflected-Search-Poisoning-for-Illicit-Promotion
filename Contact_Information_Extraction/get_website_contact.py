@@ -33,14 +33,14 @@ with open('data/Sogou/positive_data_predicted.txt', 'r', encoding = 'utf-8') as 
     data += fp.readlines()
 
 terms_with_website = set()
-
+terms_extracted = set()
 terms = set()
 for item in data:
     term, link, kwd, timestamp, pagenum = eval(item)
     terms.add(term)
 
 print(f'Finish Getting terms, get {len(terms)} terms')
-
+data = []
 top_domain = set()
 with open('top_domain.csv', 'r', encoding='utf-8') as fp:
     reader = csv.reader(fp)
@@ -93,7 +93,11 @@ def get_website(term, index):
         term_replaced = term_replaced.replace('⒚', '19.')
         term_replaced = term_replaced.replace('⒛', '20.')
         url = re.search(url_pattern, term_replaced).group().lower()
-        if is_legal_url(url):
+        if is_legal_url(url) and not term.startswith('http://') and not term.startswith('https://'):
+            # Sometimes term is a whole url starts with http://, this is often a redirecting url embedding in origin url, 
+            # instead of a SEO term. 
+            # Actually this is a false positive term misclassified by our adaboost classifier. 
+            # Jump over when extracting url from terms. 
             if url not in urls.keys() and url not in dns_failed:
                 if USE_DNS:
                     isDnsSuccess =  try_dns(url)
@@ -105,11 +109,13 @@ def get_website(term, index):
                     if isDnsSuccess:
                         urls[url] = [term, 1]
                         terms_with_website.add(term)
+                        terms_extracted.add((term, url))
                     else:
                         dns_failed.add(url)
                 else:
                     urls[url][1] += 1
                     terms_with_website.add(term)
+                    terms_extracted.add((term, url))
             lock.release()
         if index % 10000 == 1 and USE_DNS:
             print('finish term ' + str(index))
@@ -195,5 +201,8 @@ else:
         for item in terms_with_website:
             fp.write(item)
             fp.write('\n')
-
+with open('data/terms_extracted_website.txt', 'w', encoding='utf-8') as fp:
+    for item in terms_extracted:
+        fp.write(str(item))
+        fp.write('\n')
 pass

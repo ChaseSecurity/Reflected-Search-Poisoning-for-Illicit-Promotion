@@ -63,12 +63,16 @@ def get_html_using_requests(url, proxies):
         return ""
 
 
-def isFreeRide(title, link):
-    if ('%' in link) and (link.startswith('http')):
-        if parse.urlparse(link).hostname == title:
+def isFreeRide(title:str, link:str):
+    if title.startswith('http://') or title.startswith('https://'):
+        return False
+    if link.startswith('http'):
+        if parse.urlparse(link).hostname == title.split(':')[0]:
             return False
-        else:
+        elif '%' in link or not link.isascii():
             return True
+        else:
+            return False
     else:
         return False
 
@@ -96,7 +100,7 @@ def parse_html(page_source, results: set , results_output:set, keyword, page_num
                 link = get_real_address(anchor['href'])
                 title = get_kwd_from_url(link)
                 timestump = time.time()
-                if link.startswith('http'):
+                if link.startswith('http') and 'wappass.baidu.com' not in link and 'image.baidu.com' not in link:
                     if (title, link) not in results:
                         results_output.add((title, link, keyword, page_num, timestump))
                         results.add((title, link))

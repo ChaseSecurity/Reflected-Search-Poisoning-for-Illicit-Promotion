@@ -1,11 +1,14 @@
 from util import *
+from classifier import *
 from random import randint
 import warnings
 import logging
 import threading
+import pickle
 lock = threading.Lock()
 logging.basicConfig(level=logging.INFO)
-
+with open('model/adaboost_model.pickle', 'rb') as f:
+    model = pickle.load(f)
 warnings.filterwarnings("ignore")
 
 def search_a_contact(contact, port):
@@ -41,14 +44,46 @@ def search_a_contact(contact, port):
         start_num += 10
         page_source = ''
 
+    data_terms = []
+    all_data_for_classify = []
+    positive_data_predicted = []
+    negative_data_predicted = []
+    for result in result_list:
+        if isFreeRide(result[0], result[1]):
+            all_data_for_classify.append(str(result))
+        else:
+            negative_data_predicted.append(str(result))
+
+    for item in all_data_for_classify:
+        data_terms.append(eval(item)[0])
+
+    if len(all_data_for_classify) != 0:
+        predict_results = Predict_With_Model(model, data_terms)
+
+        for index, result in enumerate(predict_results):
+            if result == 1:
+                positive_data_predicted.append(all_data_for_classify[index])
+            else:
+                negative_data_predicted.append(all_data_for_classify[index])
+
     lock.acquire()
+    with open('result/negative_data_predicted_fromcontact.txt', 'a', encoding='utf-8') as fp:
+        for item in negative_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
+    with open('result/positive_data_predicted_fromcontact.txt', 'a', encoding='utf-8') as fp:
+        for item in positive_data_predicted:
+            fp.write(item)
+            fp.write('\n')
+
     with open('result/result_from_contact.txt', 'a', encoding='utf-8') as fp:
         result_len = len(result_list)
         for i in range(result_len):
             fp.write(str(result_list[i]))
             fp.write('\n')
     lock.release()
-    print('Finish contact info: ' + contact + ' result num = ' + str(result_len))
+    print(f'Finish contact info: {contact}, result num = {result_len}, positive num = {len(positive_data_predicted)}')
 
 
 from concurrent.futures import ThreadPoolExecutor, as_completed

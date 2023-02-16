@@ -12,7 +12,7 @@ import torch
 import re
 
 terms_with_telegram = set()
-
+terms_extracted = set()
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -113,9 +113,11 @@ def get_telegram_contact(terms_all_list, tg_contact):
             if result[1] not in tg_contact.keys():
                 tg_contact[result[1]] = [sentences_raw[n], 1]
                 terms_with_telegram.add(sentences_raw[n])
+                terms_extracted.add((sentences_raw[n], result[1]))
             else:
                 tg_contact[result[1]][1] += 1
                 terms_with_telegram.add(sentences_raw[n])
+                terms_extracted.add((sentences_raw[n], result[1]))
 
 
 data = []
@@ -141,7 +143,7 @@ for item in data:
     terms_all.add(term)
 
 print(f'Finish Getting terms, get {len(terms_all)} terms')
-
+data = []
 #-------------------------------------------------------------------------------------------------
 labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']
 labels_dict = {'website':0, 'wechat':1, 'qq':2, 'telegram':3, 'others':4, 'telephone':5}
@@ -180,4 +182,9 @@ with open('data/telegram_contact.txt', 'w', encoding='utf-8') as fp:
 with open('data/terms_with_telegram.txt', 'w', encoding='utf-8') as fp:
     for item in terms_with_telegram:
         fp.write(item)
+        fp.write('\n')
+
+with open('data/terms_extracted_telegram.txt', 'w', encoding='utf-8') as fp:
+    for item in terms_extracted:
+        fp.write(str(item))
         fp.write('\n')

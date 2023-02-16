@@ -33,7 +33,7 @@ keywords_all_list = []
 positive_keywords_predicted = []
 negative_keywords_predicted = []
 for item in keywords_all:
-    keywords_all_list.append(item[:-1])
+    keywords_all_list.append(item)
 
 logging.info('Finish pre-proceeding')
 
