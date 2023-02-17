@@ -24,7 +24,7 @@ def search_a_contact(contact, port):
         }
     else:
         proxies = None
-    url = "https://www.bing.com/search?q=" +contact+ "&start=0&FORM=PERE"
+    url = "https://www.bing.com/search?q=" +contact+ "&first=0&FORM=PERE"
     results_output = set()
     results = set()
 
