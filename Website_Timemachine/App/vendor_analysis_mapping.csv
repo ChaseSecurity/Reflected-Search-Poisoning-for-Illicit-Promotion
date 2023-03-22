@@ -1,0 +1,74 @@
+vendor_analysis,general_mapping
+[SymantecMobileInsight] AdLibrary:Generisk,Adware
+[SymantecMobileInsight] AdLibrary:Jpush,Adware
+[DrWeb] Adware.ShareInstall.1.origin,Adware
+[K7GW] Adware ( 0059ca381 ),Adware
+[Ikarus] PUA.AndroidOS.AdDisplay,Adware
+[Avira] ANDROID/Malformed.ZIP.Gen,Malformed
+[F-Secure] Malware.ANDROID/Malformed.ZIP.Gen,Malformed
+[McAfee-GW-Edition] Artemis!6EB81FFD8794,Malware
+[McAfee] Artemis!6EB81FFD8794,Malware
+[McAfee] Artemis!F51184FEEB17,Malware
+[McAfee] Artemis!EB15B73C1CF2,Malware
+[Google] Detected,Malware
+[Cynet] Malicious (score: 99),Malware
+[ClamAV] Txt.Malware.Agent-9913425-0,Malware
+[SymantecMobileInsight] Other:Android.Reputation.2,Malware
+[Sophos] Android Packed App (PUA),Riskware
+[Avast-Mobile] APK:CRepMalware [PUP],Riskware
+[SymantecMobileInsight] AppRisk:Generisk,Riskware
+[Fortinet] Riskware/Application!Android,Riskware
+[DrWeb] Tool.SilentInstaller.16.origin,Riskware
+[Trustlook] Android.PUA.General,Riskware
+[CAT-QuickHeal] Android.VirtualApp.GEN34347 (PUP),Riskware
+[BitDefenderFalx] Android.Riskware.Agent.KHT,Riskware-Agent
+[BitDefenderFalx] Android.Riskware.Agent.KCC,Riskware-Agent
+[BitDefenderFalx] Android.Riskware.Agent.AEV,Riskware-Agent
+[Ikarus] PUA.AndroidOS.DataCollector,Riskware-DataCollector
+[Tencent] a.fraud.SCMgeneric,Riskware-Fraud
+[MaxSecure] Android.resharer.n,Riskware-Resharer
+[MaxSecure] Android.WIN32.Robtes.dc,Riskware-Robtes
+[Ikarus] PUA.AndroidOS.ScamApp,Riskware-Scam
+[Ikarus] PUA.AndroidOS.SMSreg,Riskware-SMSreg
+[Fortinet] Riskware/PackagingUntrustworthyJiagu!Android,Riskware-UntrustworthyPackaging
+[ESET-NOD32] a variant of Android/Packed.Jiagu.D potentially unsafe,Riskware-UntrustworthyPackaging
+[Ikarus] PUA.AndroidOS.Jiagu,Riskware-UntrustworthyPackaging
+[ESET-NOD32] a variant of Android/Packed.Jiagu.H potentially unsafe,Riskware-UntrustworthyPackaging
+[ESET-NOD32] a variant of Android/Packed.Jiagu.J potentially unsafe,Riskware-UntrustworthyPackaging
+[ESET-NOD32] a variant of Android/Packed.VirtualApp.B potentially unsafe,Riskware-UntrustworthyPackaging
+[MaxSecure] Virus.RiskTool.AndroidOS.Wapron.dkj2,Riskware-Wapron
+[NANO-Antivirus] Trojan.Android.SmsSpy.jjpmgp,Spyware
+[Avira] ANDROID/SpyAgent.FLSQ.Gen,Spyware
+[Trustlook] Android.PUA.Spyware,Spyware
+[F-Secure] Malware.ANDROID/SpyAgent.FLSQ.Gen,Spyware
+[Avast-Mobile] Android:Evo-gen [Trj],Trojan
+[K7GW] Trojan ( 005947901 ),Trojan
+[K7GW] Trojan ( 0052d2661 ),Trojan
+[K7GW] Trojan ( 0055671e1 ),Trojan
+[K7GW] Trojan ( 00577c931 ),Trojan
+[Fortinet] Android/Agent.HGM!tr,Trojan
+[K7GW] Trojan ( 0001140e1 ),Trojan
+[McAfee-GW-Edition] Artemis!Trojan,Trojan
+[MaxSecure] Trojan.Malware.300983.susgen,Trojan
+[Fortinet] Android/Agent.KJO!tr,Trojan
+[K7GW] Trojan ( 0053576b1 ),Trojan
+[K7GW] Trojan ( 0059b6781 ),Trojan
+[NANO-Antivirus] Trojan.Zip.Generic.dghgru,Trojan
+[MaxSecure] Android.Xafekopy.e,Trojan
+[K7GW] Trojan ( 0059f63a1 ),Trojan
+[Symantec] Trojan.Gen.MBT,Trojan
+[Antiy-AVL] Trojan/Generic.ASMalwAD.EC6,Trojan
+[Microsoft] Trojan:AndroidOS/SAgent.BY!MTB,Trojan
+[Antiy-AVL] Trojan/Generic.ASMalwAD.7,Trojan
+[Ikarus] Trojan.AndroidOS.Agent,Trojan
+[Ikarus] AndroidOS.Boogr,Trojan
+[Fortinet] Android/Generic.S.21BF8E!tr,Trojan
+[Avast-Mobile] APK:RepMalware [Trj],Trojan
+[Sophos] Andr/Xgen2-AHT,Trojan
+[Ikarus] Trojan-Downloader.AndroidOS.Agent,Trojan-Downloader
+[ESET-NOD32] a variant of Android/TrojanDropper.Agent.HGM,Trojan-Dropper
+[Ikarus] Trojan-Dropper.AndroidOS.Agent,Trojan-Dropper
+[ESET-NOD32] a variant of Android/TrojanDropper.Agent.KJO,Trojan-Dropper
+[Kaspersky] HEUR:Trojan-Dropper.AndroidOS.Badpack.a,Trojan-Dropper
+[ZoneAlarm] HEUR:Trojan-Dropper.AndroidOS.Badpack.a,Trojan-Dropper
+[Ikarus] Trojan-Spy.AndroidOS.Banker,Trojan-Spy
