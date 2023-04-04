@@ -1,4 +1,4 @@
-# train_classify_seo_terms.py
+# train_classify_telegram_messages.py
 
 """
 Follow tutorials listed below
@@ -10,7 +10,7 @@ output_path = f'/data/sangyiwu/RBSEO_classifier_train_model/{version}'
 from simpletransformers.classification import MultiLabelClassificationModel
 import pandas as pd
 import logging
-from sklearn.metrics import f1_score, precision_score, recall_score
+from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score, classification_report
 from sklearn.model_selection import train_test_split
 import torch
 import csv
@@ -54,7 +54,7 @@ logging.info(f"Loaded {len(samples)} samples.")
 
 sample_df = pd.DataFrame(samples)
 sample_df.columns = ["text", "labels"]
-train_df, eval_df = train_test_split(sample_df, test_size=0.2)
+train_df, eval_df = train_test_split(sample_df, test_size=0.2, random_state=2)
 
 # Optional model configuration
 cuda_available = torch.cuda.is_available()
@@ -73,25 +73,93 @@ model = MultiLabelClassificationModel(
     num_labels=len(labels_list),
 )
 
-def precision_score_multilabel(y_true, y_pred):
+def precision_score_multilabel_weighted(y_true, y_pred):
     y_pred = y_pred.round()
     return precision_score(y_true, y_pred, average='weighted')
+def precision_score_multilabel_micro(y_true, y_pred):
+    y_pred = y_pred.round()
+    return precision_score(y_true, y_pred, average='micro')
+def precision_score_multilabel_macro(y_true, y_pred):
+    y_pred = y_pred.round()
+    return precision_score(y_true, y_pred, average='macro')
+def precision_score_multilabel_samples(y_true, y_pred):
+    y_pred = y_pred.round()
+    return precision_score(y_true, y_pred, average='samples')
 
-def recall_score_multilabel(y_true, y_pred):
+def recall_score_multilabel_weighted(y_true, y_pred):
     y_pred = y_pred.round()
     return recall_score(y_true, y_pred, average='weighted')
+def recall_score_multilabel_micro(y_true, y_pred):
+    y_pred = y_pred.round()
+    return recall_score(y_true, y_pred, average='micro')
+def recall_score_multilabel_macro(y_true, y_pred):
+    y_pred = y_pred.round()
+    return recall_score(y_true, y_pred, average='macro')
+def recall_score_multilabel_samples(y_true, y_pred):
+    y_pred = y_pred.round()
+    return recall_score(y_true, y_pred, average='samples')
 
-def f1_score_multilabel(y_true, y_pred):
+def f1_score_multilabel_weighted(y_true, y_pred):
     y_pred = y_pred.round()
     return f1_score(y_true, y_pred, average='weighted')
+def f1_score_multilabel_micro(y_true, y_pred):
+    y_pred = y_pred.round()
+    return f1_score(y_true, y_pred, average='micro')
+def f1_score_multilabel_macro(y_true, y_pred):
+    y_pred = y_pred.round()
+    return f1_score(y_true, y_pred, average='macro')
+def f1_score_multilabel_samples(y_true, y_pred):
+    y_pred = y_pred.round()
+    return f1_score(y_true, y_pred, average='samples')
+
+def accuracy_score_multilabel(y_true, y_pred):
+    y_pred = y_pred.round()
+    return accuracy_score(y_true, y_pred)
+
+def classification_report_multilabel(y_true, y_pred):
+    y_pred = y_pred.round()
+    return classification_report(y_true, y_pred, target_names=labels_list)
 
 # Train the model
-model.train_model(train_df, eval_df, precision = precision_score_multilabel, recall = recall_score_multilabel, f1 = f1_score_multilabel)
+model.train_model(
+    train_df, 
+    eval_df, 
+    accuracy = accuracy_score_multilabel,
+    precision_micro = precision_score_multilabel_micro, 
+    precision_macro = precision_score_multilabel_macro, 
+    precision_weighted = precision_score_multilabel_weighted, 
+    precision_samples = precision_score_multilabel_samples, 
+    recall_micro = recall_score_multilabel_micro, 
+    recall_macro = recall_score_multilabel_macro, 
+    recall_weighted = recall_score_multilabel_weighted, 
+    recall_samples = recall_score_multilabel_samples, 
+    f1_micro = f1_score_multilabel_micro,
+    f1_macro = f1_score_multilabel_macro,
+    f1_weighted = f1_score_multilabel_weighted,
+    f1_samples = f1_score_multilabel_samples,
+    classification_report = classification_report_multilabel
+)
 
 # Evaluate the model
-result, model_outputs, wrong_predictions = model.eval_model(eval_df, precision = precision_score_multilabel, recall = recall_score_multilabel, f1 = f1_score_multilabel)
+result, model_outputs, wrong_predictions = model.eval_model(
+    eval_df, 
+    accuracy = accuracy_score_multilabel,
+    precision_micro = precision_score_multilabel_micro, 
+    precision_macro = precision_score_multilabel_macro, 
+    precision_weighted = precision_score_multilabel_weighted, 
+    precision_samples = precision_score_multilabel_samples, 
+    recall_micro = recall_score_multilabel_micro, 
+    recall_macro = recall_score_multilabel_macro, 
+    recall_weighted = recall_score_multilabel_weighted, 
+    recall_samples = recall_score_multilabel_samples, 
+    f1_micro = f1_score_multilabel_micro,
+    f1_macro = f1_score_multilabel_macro,
+    f1_weighted = f1_score_multilabel_weighted,
+    f1_samples = f1_score_multilabel_samples,
+    classification_report = classification_report_multilabel
+)
 
-
+# Export the wrong predictions
 wrong_predictions_to_save = []
 for wp in wrong_predictions:
     idx = wp.guid
