@@ -4,7 +4,7 @@ import re
 from urllib import parse
 from create_proxy_auth_extension import create_proxy_auth_extension
 import requests
-from selenium import webdriver
+# from selenium import webdriver
 import time
 
 def get_html(url, browser):
@@ -50,7 +50,7 @@ def get_html_using_requests(url, proxies):
 
 
 def isFreeRide(title:str, link:str):
-    if title.startswith('http://') or title.startswith('https://'):
+    if title.startswith('http://') or title.startswith('https://') or 'sogoucdn.com' in link:
         return False
     if link.startswith('http'):
         if parse.urlparse(link).hostname == title.split(':')[0]:

@@ -16,6 +16,7 @@ warnings.filterwarnings("ignore")
 def search_a_contact(contact, port):
     proxyPort = port
     if use_proxy:
+        #TODO: Change the proxy url
         proxies = {
             'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort),
             'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort)
@@ -35,6 +36,7 @@ def search_a_contact(contact, port):
         start_try_time = time.time()
         while page_source == '':
             if time.time() - start_try_time > 120:
+                #TODO: Change the proxy url and proxy port
                 proxies = {
                     'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19)),
                     'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19))
@@ -104,11 +106,13 @@ if __name__ == '__main__':
         if contact_index < start_with_index:
             continue
         if len(all_task) < max_pool:
+            #TODO: Change the proxy proxy port
             all_task.append(thread_pool.submit(search_a_contact, contact[:-1], 10000 + (contact_index % 20)))
             logging.info(f'Initial Submit index = {contact_index}')
         else:
             for future in as_completed(all_task):
                 all_task.remove(future)
+                #TODO: Change the proxy proxy port
                 all_task.append(thread_pool.submit(search_a_contact, contact[:-1], 10000 + (contact_index % 20)))
                 logging.info(f'Finished, Submit index = {contact_index}')
                 break

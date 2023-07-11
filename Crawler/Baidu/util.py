@@ -4,7 +4,7 @@ import re
 from urllib import parse
 from create_proxy_auth_extension import create_proxy_auth_extension
 import requests
-from selenium import webdriver
+# from selenium import webdriver
 import time
 
 def get_existed_html_from_browser(browser):

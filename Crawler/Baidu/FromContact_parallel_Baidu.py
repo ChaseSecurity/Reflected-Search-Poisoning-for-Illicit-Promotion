@@ -14,20 +14,11 @@ with open('model/adaboost_model.pickle', 'rb') as f:
     model = pickle.load(f)
 def search_a_contact(contact, port):
     proxyPort = port
+    #TODO: Change the proxy url
     proxies = {
         'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort),
         'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort)
     }
-    if use_browser:
-        proxyUser = "muxing"
-        proxyPass = "b1bf0c-23daaf-5f92e8-a9f151-0cf49e"
-        proxyHost = "private.residential.proxyrack.net"
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--ignore-ssl-errors=yes')
-        chrome_options.add_argument('--ignore-certificate-errors')
-        chrome_options.add_extension(create_proxy_auth_extension(proxyHost, proxyPort, proxyUser, proxyPass, scheme='http'))
-        browser = webdriver.Chrome(options=chrome_options)
-        browser.delete_all_cookies()
     url = "http://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=34046034_10_dg&wd=" + contact + "&pn=0"
     results_output = set()
     results = set()
@@ -37,32 +28,16 @@ def search_a_contact(contact, port):
     page_source = ''
     for i in range(15):
         url = "http://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=34046034_10_dg&wd=" + contact +'&oq='+contact+ "&pn=" + str(start_num)
-        if use_browser:
-            page_source = get_html(url, browser)
-        else:
-            page_source = get_html_using_requests(url, proxies)
+        page_source = get_html_using_requests(url, proxies)
         start_try_time = time.time()
         while page_source == '':
             if time.time() - start_try_time > 120:
+                #TODO: Change the proxy url and proxy port
                 proxies = {
                     'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19)),
                     'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19))
                 }
-            if use_browser:
-                browser.quit()
-                # try:
-                #     resp = requests.get("http://api.proxyrack.net/release", proxies=proxies, verify=False)
-                # except:
-                #     pass
-                chrome_options = webdriver.ChromeOptions()
-                chrome_options.add_argument('--ignore-ssl-errors=yes')
-                chrome_options.add_argument('--ignore-certificate-errors')
-                chrome_options.add_extension(create_proxy_auth_extension(proxyHost, proxyPort, proxyUser, proxyPass, scheme='http'))
-                browser = webdriver.Chrome(options=chrome_options)
-                browser.delete_all_cookies()
-                page_source = get_html(url, browser)
-            else:
-                page_source = get_html_using_requests(url, proxies)
+            page_source = get_html_using_requests(url, proxies)
         Have_Result = parse_html(page_source, results, results_output, contact, start_num//10)
         start_num += 10
         page_source = ''
@@ -126,11 +101,13 @@ if __name__ == '__main__':
         if contact_index < start_with_index:
             continue
         if len(all_task) < max_pool:
+            #TODO: Change the proxy proxy port
             all_task.append(thread_pool.submit(search_a_contact, contact[:-1], 10000 + (contact_index % 20)))
             logging.info(f'Initial Submit index = {contact_index}')
         else:
             for future in as_completed(all_task):
                 all_task.remove(future)
+                #TODO: Change the proxy proxy port
                 all_task.append(thread_pool.submit(search_a_contact, contact[:-1], 10000 + (contact_index % 20)))
                 logging.info(f'Finished, Submit index = {contact_index}')
                 break

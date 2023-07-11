@@ -10,14 +10,17 @@ logging.basicConfig(level=logging.INFO)
 
 warnings.filterwarnings("ignore")
 
+#TODO: Change the proxy url
+proxy_url = 'muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net'
+
 with open('model/adaboost_model.pickle', 'rb') as f:
     model = pickle.load(f)
 
 def search_a_site(site, port):
     proxyPort = port
     proxies = {
-        'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort),
-        'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort)
+        'http' : 'http://' + proxy_url + ':' + str(proxyPort),
+        'https' : 'https://' + proxy_url + ':' + str(proxyPort)
     }
     insite_SE = site
     url = "https://www.google.com/search?q=site:" +insite_SE+ "&start=0"
@@ -32,9 +35,10 @@ def search_a_site(site, port):
         start_try_time = time.time()
         while page_source == '':
             if time.time() - start_try_time > 120:
+                #TODO: Change the proxy port
                 proxies = {
-                    'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19)),
-                    'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19))
+                    'http' : 'http://' + proxy_url + ':' + str(10000+randint(0, 19)),
+                    'https' : 'https://' + proxy_url + ':' + str(10000+randint(0, 19))
                 }
                 # If wait for more that 120s, then choose a new proxy port. 
                 # Never suspended by a bad proxy!
@@ -85,17 +89,19 @@ def search_a_site(site, port):
     lock.release()
     # If result len < 50, then try to add some keywords
     if positive_result_num < 50:
+        #TODO: Change the keyword list
         keywords = ['微', '薇', '扣', 'qq', 'vx', 'tg', 'telegram',  '飞机', '@', '网', '复制']
         for i, keyword in enumerate(keywords):
             # thread_pool.submit(search_a_site_with_keywords, site, keyword, 10000 + (i % 5))
+            #TODO: Change the proxy port
             search_a_site_with_keywords(site, keyword, 10000 + (i % 20))
 
 
 def search_a_site_with_keywords(site, keyword, port):
     proxyPort = port
     proxies = {
-        'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort),
-        'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(proxyPort)
+        'http' : 'http://' + proxy_url + ':' + str(proxyPort),
+        'https' : 'https://' + proxy_url + ':' + str(proxyPort)
     }
     insite_SE = site
     url = 'https://www.google.com/search?q='+keyword+'+site:' +insite_SE+ '&start=0'
@@ -109,9 +115,10 @@ def search_a_site_with_keywords(site, keyword, port):
         start_try_time = time.time()
         while page_source == '':
             if time.time() - start_try_time > 120:
+                #TODO: Change the proxy port
                 proxies = {
-                    'http' : 'http://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19)),
-                    'https' : 'https://muxing:b1bf0c-23daaf-5f92e8-a9f151-0cf49e@private.residential.proxyrack.net:' + str(10000+randint(0, 19))
+                    'http' : 'http://' + proxy_url + ':' + str(10000+randint(0, 19)),
+                    'https' : 'https://' + proxy_url + ':' + str(10000+randint(0, 19))
                 }
             page_source = get_html_using_requests(url, proxies)
                 # If wait for more that 120s, then choose a new proxy port. 
@@ -176,11 +183,13 @@ if __name__ == '__main__':
         if site_index < start_with_index:
             continue
         if len(all_task) < max_pool:
+            #TODO: Change the proxy port
             all_task.append(thread_pool.submit(search_a_site, item[:-1], 10000 + (site_index % 20)))
             logging.info(f'Initial Submit index = {site_index}')
         else:
             for future in as_completed(all_task):
                 all_task.remove(future)
+                #TODO: Change the proxy port
                 all_task.append(thread_pool.submit(search_a_site, item[:-1], 10000 + (site_index % 20)))
                 logging.info(f'Finished, Submit index = {site_index}')
                 break
