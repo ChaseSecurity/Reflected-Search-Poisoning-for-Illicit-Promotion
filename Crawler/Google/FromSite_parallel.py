@@ -88,6 +88,7 @@ def search_a_site(site, port):
     print('Finish crawling freerided site: ' + site + ' result num = ' + str(result_len))
     lock.release()
     # If result len < 50, then try to add some keywords
+    #TODO: If you want to use keywords for every url scheme, change 50 to 0
     if positive_result_num < 50:
         #TODO: Change the keyword list
         keywords = ['微', '薇', '扣', 'qq', 'vx', 'tg', 'telegram',  '飞机', '@', '网', '复制']
