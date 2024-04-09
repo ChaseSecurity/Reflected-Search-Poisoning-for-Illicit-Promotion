@@ -1,49 +1,31 @@
-# Reflected Blackhat SEO
+# Reflected Search Poisoning for Illicit Promotion
 
-## Crawler
+[![Paper](http://img.shields.io/badge/Paper-arXiv.2404.05320-B3181B?logo=arXiv)](https://arxiv.org/abs/2404.05320)
 
-Use a crawler to get reflected blackhat SEO data from search engines. 
+## Search Engine Crawler
 
-Search engines = {Google, Bing, Baidu, Sogou}
+Deploy a crawler to obtain reflected search poisoning data from four search engines: Google, Bing, Baidu, Sogou.
 
-## Contact Classify and Named Entity Recognition
+## Binary IPT Classifier
 
-Classify which kind of contact methodology an SEO term use. 
+A Random Forest classifier trained with 2,229 positive data and 1,468 negative data to distinguish RSPs from benign URL reflections. 
 
-contact_methodology = {telegram, website, qq, WeChat, other}
+## IPT Keyword Extractor
 
-## Terms Binary Classifier
+A Random Forest classifier trained with 1,012 positive data and 3,170 negative data to decide whether an IPT segment is a contact segment or not, which is a good search keyword in terms of guiding the search engines and discovering new RSPs/IPTs.
 
-An AdaBoost classifier with 100 estimiters, trained with 2004 positive data (SEO terms) and 1245 negative data (common websites). 
+## Multi-label IPT Classifier
 
-## Keywords Extract Classifier
+By fine tuning the multilingual BERT model, we build this classifier to classify IPT as either a harmless 'Benign' category or one or more of the 14 illicit services/goods categories.
 
-A random forest classifier to judge if a segment of an SEO term is a contact information field. 
+## IPT Contact Extractor
 
-The contact information keywords are used to crawl more SEO terms in search engines. 
+Taking an IPT as the input, our contact extractor is designed to extract all the embedded contact entities, which is achieved by a contact type classifier and contact entity extractors.
 
-## Terms Multilabel Classifier
+## Website Dynamic Crawler
 
-Classify a term using a multilabel classifier, to identify the cybercrime activity of the term. 
+By instrumenting a headless browser, we capture the final landing webpage as a screenshot and save all the network traffic of both HTTP requests and HTTP responses. 
 
-class = {Drug, Gambling, Surrogacy, Sex & Porn, SEO, Cryptocurrency, General service, Hacker & Crime, Coding & Ghost writing, (Fake) Certificate & Account, Sales & Advertisement, (Fake) Merchandise, SMS, VPN, Financial related, Web Service & App, Benign Terms, Detective, Data service, Unknown}
+## Telegram Account Infiltrator
 
-## Contact Information Extraction
-
-Use some methods to extract contact information embedding in terms. 
-
-Now finished extracting websites, and telegram accounts. 
-
-## Website Timemachine
-
-A time machine to crawl websites extracted from SEO terms. 
-
-## Telegram Timemachine
-
-A time machine to crawl telegram accounts extracted from SEO terms.
-
-## Website Screenshot Classifier
-
-Classify a website using a multimodal classifier based on the screenshot of its landing page output by `time_machine.py` and the text content extracted from it by OCR, to identify the cybercrime activity of the website.
-
-class = {(Fake) Certificate & Account & Merchandise, Drug, Financial related, Gambling, Benign, Hacker & Crime, Sales & Advertisement, SEO, Sex & Porn, Unknown, Redirection Page, Domain Expired}
+Leveraging publicly available Telegram APIs, we can extract the profile of each Telegram account at a weekly pace.
