@@ -25,3 +25,5 @@ Manually Crafted Features:
 - **Number of patterns about next-hop instant messaging accounts.** These patterns include `'微信', 'q微', '扣微', '微', '薇', '扣扣', 'qq', 'com', 'fun', 'cc', 'hash', 'tg', 'telegram', '飞机', '@', '网', '复制', 'v信','컴', 'www'`.
 
 - **If there is a file suffix.** Common file suffixes for URLs include `'.html', '.shtml', '.htm', '.php', '.pdf', '.jpg', '.jpeg', '.png', '.xlsx', '.doxx', '.pptx', '.xml'`. Rather than benign URLs, IPTs tend to have no such kinds of suffixes.
+
+The output model can be found [here](../Search_Engine_Crawler/model/random_forest_model_binaryIPT.pickle)

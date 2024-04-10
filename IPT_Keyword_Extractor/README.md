@@ -21,3 +21,5 @@ The list of features:
 - **Number of some common punctuation marks in terms.** Various punctuation symbols are used to separate an IM mark and the respective IM account identifier. Symbols under our consideration include `'.', ':', '：', '·', 'ͺ', '-'`.
 
 - **If there is a file suffix.** Common file suffixes for URLs include `'.html', '.shtml', '.htm', '.php', '.pdf', '.jpg', '.jpeg', '.png', '.xlsx', '.doxx', '.pptx', '.xml'`. Rather than benign URLs, IPTs tend to have no such kinds of suffixes.
+
+The output model can be found [here](../Search_Engine_Crawler/model/random_forest_model_keywords.pickle)
