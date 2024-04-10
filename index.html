@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Website for paper 'Reflected Search Poisoning for Illicit Promotion'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reflected Search Poisoning for Illicit Promotion</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.ico">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Reflected Search Poisoning for Illicit Promotion</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a href="#" target="_blank">Sangyi Wu</a>,</span>
+                <span class="author-block">
+                  <a href="#" target="_blank">Jialong Xue</a>,</span>
+                  <span class="author-block">
+                    <a href="#" target="_blank">Shaoxuan Zhou</a>
+                  </span> and</span>
+                  <span class="author-block">
+                    <a href="https://xianghang.me/" target="_blank">Xianghang Mi</a>
+                  </span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block">University of Science and Technology of China</span>
+                    <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+                  </div>
+
+      
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2404.05320.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2404.05320"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/ChaseSecurity/ReflectedBlackSEO"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://drive.google.com/drive/folders/1ksisPgmM5UbhcoOcTlx7CzFCsGOwf3J8?usp=drive_link"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fa fa-database"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="static/images/USA_diploma.png" />
+      <h2 class="subtitle has-text-centered">
+        Reflected search poisoning cases promoting fake certificate services got returned when querying Google Search with the Chinese keyword "美国文凭" (USA diploma) on Sep 26, 2023. 
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p style="font-size: 110%">
+            As an emerging black hat search engine optimization (SEO) technique, reflected search poisoning (RSP) allows a miscreant to free-ride the reputation of high-ranking websites, get search engines poisoned with illicit promotion texts (IPTs) in an efficient and stealthy manner, while avoiding the burden of continuous website compromise as required in traditional promotional infections. However, little is known regarding the security implications of RSP, e.g., what illicit promotion campaigns are being distributed through RSP, and to what extent regular search users can be exposed to illicit promotion texts distributed through RSP. In this study, we conduct the first security study on RSP-based illicit promotion, which is made possible through an end-to-end methodology for capturing, analyzing, and infiltrating IPTs.
+          </p>
+          <p style="font-size: 110%">
+            As the results, IPTs distributed through RSP are found to be large-scale, continuously growing, and diverse in both illicit categories and natural languages. Particularly, we have identified over 11 million distinct IPTs which belong to 14 different illicit categories with typical examples including drug trading, data theft, counterfeit goods, and hacking services. Also, the underlying RSP cases have abused tens of thousands of high-ranking websites (e.g., 21% of the top 10K most popular websites) as well as extensively poisoning all four popular search engines under our study especially Google Search and Bing. Furthermore, it is also observed that benign search users are being exposed to IPTs at a concerning extent. Also, to facilitate interaction with potential customers (victim search users), miscreants tend to embed in IPTs, various types of contacts, especially instant messaging accounts. Further infiltration of these IPT contacts reveals that the underlying illicit campaigns are operated on a large scale, e.g., among 48K contacts extracted from IPTs, 2,333 are Telegram channels with 29 million subscribers in total, while 661 are Telegram groups with 606K distinct group members. All these results highlight the negative security implications of IPTs and RSPs, and thus call for more efforts to be invested to mitigate RSP-driven illicit promotion.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    <div class="rows">
+        <div class="rows is-centered ">
+            <div class="row is-full-width">
+                <h2 class="title is-3"><span class="dvima">Methodology</span></h2>
+                <img src="static/images/methodology.png">
+            
+                <p style="font-size: 110%; margin-top: 2em;">
+                  Our methodology consists of three major components. One is to discover IPTs and RSPs through the IPT hunter. Then, given IPTs, an analyzer is further applied to profile IPT categories and extract contact identifiers as embedded in IPTs, through which, a large volume of contacts including instant messaging accounts and websites have been discovered. To reveal what these contacts will redirect a victim to, an IPT infiltrator is designed to automatically visit and profile  websites and Telegram accounts that are promoted in IPTs.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    <div class="rows">
+        <div class="rows is-centered ">
+            <div class="row is-full-width">
+                <h2 class="title is-3"><span class="dvima">RSP-based Illicit Promotion</span></h2>
+
+                <p style="font-size: 110%">
+                  We present a comprehensive measurement for illicit promotion texts (IPTs) that are distributed through reflected search poisoning (RSP), i.e., RSP-based IPTs. As a result, a deep understanding is gained, for the first time, regarding  what services/goods have been illicitly promoted through RSPs, how IPTs evolve across time,  what benign websites have been abused, as well as the extent to which benign search users can be exposed to IPTs.
+                </p>
+                <br>
+                <h3 class="title is-4"><span class="dvima">Illicit Promotion Texts</span></h3>
+                <div style="text-align: center; ">
+                <img src="static/images/scale.png" width="70%"></div>
+                <br>
+                <span style="font-size: 110%">
+                    <span style="font-weight: bold">Scale.</span> In total, we have captured 11,957,205 distinct IPTs that have been distributed through 13,295,628 RSPs. These RSPs have abused 180,757 unique URL reflection schemes, which belong to 79,317 fully qualified domain names (FQDNs) and 60,638 apex domains.
+                    The table above presents more detailed scale statistics for IPTs. And we can see IPTs via RSPs have successfully poisoned all four search engines under our study at a large scale.
+                </span>
+                <br>
+                <br>
+                <div style="text-align: center; ">
+                <img src="static/images/categories.png" width="70%"></div>
+                <br>
+                <span style="font-size: 110%">
+                    <span style="font-weight: bold">Categories.</span> Using the multi-label text classifier, we categorize captured IPTs into 14 categories of services and goods. As shown in the table above, the top categories with most IPTs include Sex Service (25.39%), Gambling (23.72%), and Fake Certificate (22.65%). Notably, black hat SEO operators and other illicit advertisement services have also used RSP  to promote their services, accounting for 9.16% of IPTs. 
+                </span>
+                <br>
+                <br>
+                <span style="font-size: 110%">
+                  <span style="font-weight: bold;">Languages.</span> We further profiled the IPTs with regards to their natural languages, wherein the natural language of each IPT is identified through a language identification tool named <a href="https://github.com/saffsd/langid.py">langid</a>. In total, we have observed 97 natural languages, with the top five being Chinese (88.08%), Korean (4.86%), English (1.66%), Japanese (1.48%), and Vietnamese (0.95%).
+                  As we can see,  this language distribution of IPTs is contrasted with that of the whole Internet wherein the English accounts for almost half of all the web content. We then looked into the intermediate results of our IPT hunter and have thus confirmed the fidelity of this language distribution. 
+                </span>
+                <br>
+                <br>
+                <h3 class="title is-4"><span class="dvima">Websites Abused in Illicit Promotion</span></h3>
+                <div style="text-align: center; ">
+                  <img src="static/images/popular_websites.png" width="65%"></div>
+                <br>
+                <span style="font-size: 110%;">
+                  To answer whether websites abused in RSPs indeed have a good reputation, so as to increase the likelihood of getting their webpages (including RSPs) indexed by search engines with high page ranks, we use the metric of website popularity as an approximation to website reputation. To profile the popularity of each abused website, we referred to <a href="https://tranco-list.eu/">Tranco</a>, a top site ranking with 1 million websites listed. As a result, we observed that many abused websites are highly popular. Specifically, as listed in the table above, among the aforementioned 60,638 apex domains, 20,330 (33.53%) show up in the top one million, 2,113 (3.48%) in the top 10K, and 46 (0.08%) even rank in the top 100.
+                  Besides, these abused top websites contribute  most of the IPTs. Particularly, 67.46% IPTs were observed from websites in the top one million. Also, 8,006 of the top 100K websites, while accounting for only 13.20% of all abused websites, have contributed 42.96\% IPTs and respective 40.54% RSPs.</span>
+                  <br>
+                  <br>
+                  <h3 class="title is-4"><span class="dvima">The Exposure of Search Users to IPTs</span></h3>
+
+                  <div class="columns">
+                    <div class="column has-text-centered">
+                      <span>(a) A Chinese keyword searching for a city name (Fengtai, Beijing).</span>
+                      <img src="static/images/CPT_target_case_2.png">
+                    </div>
+                    <div class="column has-text-centered">
+                      <span>(b) A Chinese keyword searching for sex services.</span>
+                      <img src="static/images/CPT_target_case_1.png">
+                    </div>
+                  </div>
+                  <br>
+                  <div class="columns">
+                    <div class="column has-text-centered">
+                      <span>(c) A Chinese keyword searching the price of Dior women's athletic shoes.</span>
+                      <img src="static/images/CPT_target_case_3.png">
+                    </div>
+                    <div class="column has-text-centered">
+                      <span>(d) A Chinese keyword searching the train from Taizhou to Huanggang.</span>
+                      <img src="static/images/CPT_target_case_4.png">
+                    </div>
+                  </div>
+
+                  <div style="margin-bottom: 1em;">
+                  <span style="font-size: 110%;">
+                    <b>(a)</b> The first type is keywords denoting location names especially city names. To further investigate this phenomenon, we used 3,368 Chinese city names to query four search engines and found that Google and Bing have been heavily poisoned. When querying Google with these city names, 1,557 out of 3,368 queries (46%) have been poisoned with one or more IPTs in the top 10 result entries, and it is 94% for the top 50 result entries. 
+                  </span>
+                  </div>
+                  <div style="margin-bottom: 1em;">
+                  <span style="font-size: 110%;">
+                    <b>(b)</b> The second type encompasses keywords of services and goods especially illicit ones, which is straightforward and easy to understand.
+                  </span>
+                  </div>
+                  <div style="margin-bottom: 1em;">
+                  <span style="font-size: 110%;">
+                    <b>(c)</b> The third type describes that if we search for some benign long-tail keywords, the search engine may return IPTs embedding those keywords.   
+                  </span>
+                  </div>
+                  <div>
+                  <span style="font-size: 110%;">
+                    <b>(d)</b> The fourth type is that when searching in Chinese for the train from Taizhou to Huanggang, Google returns an IPT promoting a website of gambling and porn videos. However, the long-tail keyword and the theme of this IPT are completely unrelated. And many IPTs have been found to embed long-tail keywords unrelated to their themes, likely in an attempt to reach a much broader search audience.
+                  </span>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    <div class="rows">
+        <div class="rows is-centered ">
+            <div class="row is-full-width">
+                <h2 class="title is-3"><span class="dvima">Next Hops of Illicit Promotion</span></h2>
+
+                <p style="font-size: 110%">
+                  83.62% IPTs have instant messaging contacts embedded as the next hop to further interact with victims (potential customers), while the rest redirect victims to their websites. Leveraging the IPT analyzer, we have extracted 48,114 IPT contacts in total which consist of 16,335 websites, 5,890 Telegram accounts, 23,632 WeChat accounts, 1,552 QQ accounts, and 705 telephone numbers.
+                </p>
+                <br>
+                <h3 class="title is-4"><span class="dvima">IPT Websites</span></h3>
+                <div style="text-align: center; ">
+                  <img src="static/images/website_categories.png" width="70%"></div>
+                <br>
+                <p style="font-size: 110%;">
+                  <span style="font-weight: bold">Security risks of IPT websites.</span> We randomly sampled 1,200 IPT websites, manually looked into their snapshots, and categorized them based on their web content. In total, among the top 14 categories with most IPT websites, 8  are either illicit or unsolicited, e.g., gambling, sex, drug sales, hacking service, etc. Such an observation is aligned with that observed for IPTs.
+                </p>
+                <br>
+                <div class="columns">
+                  <div class="column has-text-centered">
+                    <!-- <span>(a) A Chinese keyword searching for a city name (Fengtai, Beijing).</span> -->
+                    <img src="static/images/website_categories.png">
+                  </div>
+                  <div class="column has-text-centered">
+                    <br>
+                    <br>
+                    <span>A case of iframe cloaking.</span>
+                    <img src="static/images/iframe.jpg">
+                  </div>
+                </div>
+                <p style="font-size: 110%;">
+                  <span style="font-weight: bold">Evasion techniques of IPT websites.</span> We have observed the adoption of multiple evasion techniques by IPT websites, likely in an attempt to escape from detection radars. And representative evasion techniques include the lengthy redirection chain, iframe cloaking, and location-based access control.
+                </p>
+                <br>
+                <h3 class="title is-4"><span class="dvima">Instant Messaging Accounts</span></h3>
+                <div class="columns">
+                  <div class="column has-text-centered">
+                    <span>A WeChat account related to forging diplomas.</span>
+                    <img src="static/images/wechat_en.jpg" width="80%">
+                  </div>
+                  <div class="column has-text-centered">
+                    <span>A QQ account related to forging diplomas.</span>
+                    <img src="static/images/qq_en.jpg" width="60%">
+                  </div>
+                </div>
+                <p style="font-size: 110%;">
+                  <span style="font-weight: bold">WeChat and QQ accounts.</span> We manually looked into the public profiles of 250 randomly selected WeChat accounts and the top categories of illicit goods or services are Fake Certificate (33%), Surrogacy (17%), Counterfeit Goods (11%), and Sex Service (10%).
+                  For QQ, we examined randomly selected 200 accounts, and the top categories of illicit goods and services include Fake Certificate (40%), Sex Service (16%), and Gambling (12%).
+                </p>
+                <br>
+                <div style="text-align: center; ">
+                  <img src="static/images/telegram_msgs.png" width="70%"></div>
+                <p style="font-size: 110%;">
+                  <span style="font-weight: bold">Telegram accounts.</span> For each Telegram account, the profile is retrieved, and so are historical messages for group/channel accounts, which leads to the collection of over 14 million historical messages for the time period between January, 2022 and  March, 2023. We then utilized the multi-label IPT classifier to classify these messages. As a result, over 6 million (43.75%) messages are mapped to categories of illicit goods and services, especially money laundering (31.96%), black hat SEO (17.57%), data theft (13.93%), gambling (12.46%), and financial fraud (8.49%). Besides, the respective Telegram channels have over 29 million subscribers while there are 600K distinct members in the respective Telegram groups. All these data points suggest that the Telegram platform is extensively used by miscreants for not only the promotion of their illicit goods and services but also the communication with their customers.  
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    <div class="rows">
+        <div class="rows is-centered ">
+            <div class="row is-full-width">
+                <h2 class="title is-3"><span class="dvima">Conclusion</span></h2>
+
+                <p style="font-size: 110%">
+                  Through this study, we can conclude that reflected search poisoning (RSP) has been extensively exploited to free ride high-rank websites and distribute illicit promotion texts (IPTs) that are large-scale, available across search engines, as well as being diverse in categories of goods and services. Also, most services and goods promoted in IPTs belong to categories that are illicit or illegal, while regular search engine users can be exposed to such IPTs at a concerning extent.  Also, victims of IPTs can be further exposed to harmful content and illegal services when following the next-hop contacts embedded in IPTs.  All these results highlight the necessity of more efforts to be invested in the fight against illicit promotion and the underground economy.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-widescreen content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{wu2024reflected,
+      title={Reflected Search Poisoning for Illicit Promotion}, 
+      author={Sangyi Wu and Jialong Xue and Shaoxuan Zhou and Xianghang Mi},
+      year={2024},
+      eprint={2404.05320},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Website template borrowed from <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
