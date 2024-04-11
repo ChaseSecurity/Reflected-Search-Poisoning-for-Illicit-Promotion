@@ -23,7 +23,7 @@ It takes an IPT as the input and then classifies it as either a harmless 'Benign
 
 ## Usage
 
-```json
+```shell
 $ python multilabel_IPT_classifier_finetuned.py -h
 usage: multilabel_IPT_classifier_finetuned.py [-h] --model_path MODEL_PATH [--gt_dir GT_DIR]
 
