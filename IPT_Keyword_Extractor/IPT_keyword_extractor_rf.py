@@ -1,22 +1,21 @@
-from random import sample
-import pandas as pd
 import logging
-import ast
-import sklearn
-from sklearn import tree, metrics
+from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.svm import LinearSVC
 from util import *
 import pickle
 import warnings
+import argparse
 warnings.filterwarnings("ignore")
 logging.basicConfig(level=logging.INFO)
 
-# TODO: fill filepath
-ground_truth_dir = ''
-model_dir = ''
+parser = argparse.ArgumentParser()
+parser.add_argument('--model_path', type=str, default='', required=True, help='The trained model output directory')
+parser.add_argument('--gt_dir', type=str, default='./groundtruth', help='The ground truth dataset directory')
+args = parser.parse_args()
+
+model_dir = args.model_path
+ground_truth_dir = args.gt_dir
 
 positive_cases = [
     (
@@ -83,5 +82,5 @@ recall = metrics.recall_score(test_labels, predicts)
 precision = metrics.precision_score(test_labels, predicts)
 f1 = metrics.f1_score(test_labels, predicts)
 logging.info(f"Random Forest, Recall {recall}, precision {precision}, f1 {f1}")
-with open('random_forest_model_keywords.pickle', 'wb') as f:
+with open(f'{model_dir}/random_forest_model_keywords.pickle', 'wb') as f:
     pickle.dump(clf, f)

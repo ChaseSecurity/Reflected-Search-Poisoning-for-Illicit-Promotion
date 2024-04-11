@@ -27,3 +27,16 @@ Manually Crafted Features:
 - **If there is a file suffix.** Common file suffixes for URLs include `'.html', '.shtml', '.htm', '.php', '.pdf', '.jpg', '.jpeg', '.png', '.xlsx', '.doxx', '.pptx', '.xml'`. Rather than benign URLs, IPTs tend to have no such kinds of suffixes.
 
 The output model can be found [here](../Search_Engine_Crawler/model/random_forest_model_binaryIPT.pickle)
+
+## Usage
+
+```shell
+$ python binary_IPT_classifier_rf.py -h
+usage: binary_IPT_classifier_rf.py [-h] --model_path MODEL_PATH [--gt_dir GT_DIR]
+
+options:
+  -h, --help            show this help message and exit
+  --model_path MODEL_PATH
+                        The trained model output directory
+  --gt_dir GT_DIR       The ground truth dataset directory
+```

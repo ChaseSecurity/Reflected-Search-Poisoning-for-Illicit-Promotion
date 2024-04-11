@@ -1,21 +1,20 @@
-import numpy as np
 import pandas as pd
-from scipy.special import softmax
-from sklearn.model_selection import train_test_split
 import csv
 from simpletransformers.ner import NERModel
+import torch
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--im', type=str, default='', help='IM type (telegram / wechat)')
+parser.add_argument('--im', type=str, default='', required=True, help='IM type (telegram / wechat)')
+parser.add_argument('--model_path', type=str, default='', required=True, help='The trained model output directory')
+parser.add_argument('--gt_dir', type=str, default='./groundtruth', help='The ground truth dataset directory')
 args = parser.parse_args()
 
-# TODO: fill filepath
-model_dir = ''
-ground_truth_dir = ''
+model_dir = args.model_path
+ground_truth_dir = args.gt_dir
 
 if args.im == 'telegram':
-    output_dir = f"{model_dir}/telegram_NER_model"
+    output_path = f"{model_dir}/telegram_NER_model"
     train_path = f"{ground_truth_dir}/contact_NER_for_labeling_telegram.csv"
     eval_path = f"{ground_truth_dir}/telegram_NER_for_eval.csv"
 elif args.im == 'wechat':
@@ -59,11 +58,14 @@ eval_sample_df = pd.DataFrame(eval_samples)
 eval_sample_df.columns = ["sentence_id", "words", "labels"]
 
 # Create a NERModel
+cuda_available = torch.cuda.is_available()
+
 labels = ['B-contact', 'I-contact', 'O']
 model = NERModel(
     "roberta",
     "roberta-base",
     labels=labels,
+    use_cuda=cuda_available,
     args={
         "reprocess_input_data": True,
         "overwrite_output_dir": True,

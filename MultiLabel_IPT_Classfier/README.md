@@ -20,3 +20,16 @@ It takes an IPT as the input and then classifies it as either a harmless 'Benign
 | Counterfeit Goods              |
 | Financial Fraud                |
 | Others                         |
+
+## Usage
+
+```json
+$ python multilabel_IPT_classifier_finetuned.py -h
+usage: multilabel_IPT_classifier_finetuned.py [-h] --model_path MODEL_PATH [--gt_dir GT_DIR]
+
+options:
+  -h, --help            show this help message and exit
+  --model_path MODEL_PATH
+                        The trained model output directory
+  --gt_dir GT_DIR       The ground truth dataset directory
+```

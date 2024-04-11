@@ -5,16 +5,26 @@ import warnings
 import logging
 import threading
 import pickle
+import argparse
+import os
 lock = threading.Lock()
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s', level=logging.INFO)
 warnings.filterwarnings("ignore")
 
 use_proxy = False
 
-# TODO: Fill filepath
-seed_file = ''
-result_dir = ''
-model_dir = ''
+parser = argparse.ArgumentParser()
+parser.add_argument('--seed_path', type=str, required=True, help='The crawling seed filepath')
+parser.add_argument('--result_dir', type=str, required=True, help='The crawling results directory')
+parser.add_argument('--model_dir', type=str, default='./model', help='The binary_IPT_classifier directory')
+args = parser.parse_args()
+
+seed_file = args.seed_path
+result_dir = args.result_dir + '/Bing'
+model_dir = args.model_dir
+
+if not os.path.exists(result_dir):
+    os.makedir(result_dir, exist_ok=True)
 
 # TODO:  Fill your proxy information
 proxy_user = ''

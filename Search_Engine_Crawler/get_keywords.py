@@ -2,25 +2,34 @@ import pickle
 import re
 import warnings
 import logging
+import argparse
 from classifier import *
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s', level=logging.INFO)
 warnings.filterwarnings("ignore")
 
-# TODO: Fill filepath
-output_file = ''
-result_dir = ''
-model_dir = ''
+parser = argparse.ArgumentParser()
+parser.add_argument('--output', type=str, required=True, help='The keywords extracted output file')
+parser.add_argument('--result_dir', type=str, required=True, help='The obtained crawling results directory')
+parser.add_argument('--model_dir', type=str, default='./model', help='The IPT_keyword_extractor directory')
+args = parser.parse_args()
+
+output_file = args.output
+result_dir = args.result_dir
+model_dir = args.model_dir
 
 # Read positive results from file
+SEs = ['Google', 'Bing', 'Baidu', 'Sogou']
 positive_terms_predicted = []
-with open(f'{result_dir}/positive_data_predicted_from_contact.txt', 'r', encoding='utf-8') as fp:
-    positive_lists = fp.readlines()
-# if 'Google'
-with open(f'{result_dir}/positive_data_predicted_from_site.txt', 'r', encoding='utf-8') as fp:
-    positive_lists += fp.readlines()
-for item in positive_lists:
-    positive_terms_predicted.append(eval(item)[0])
+for SE in SEs:
+    result_dir = args.result_dir + '/' + SE
+    with open(f'{result_dir}/positive_data_predicted_from_contact.txt', 'r', encoding='utf-8') as fp:
+        positive_lists = fp.readlines()
+    if SE == 'Google':
+        with open(f'{result_dir}/positive_data_predicted_from_site.txt', 'r', encoding='utf-8') as fp:
+            positive_lists += fp.readlines()
+    for item in positive_lists:
+        positive_terms_predicted.append(eval(item)[0])
 logging.info(f'Finish Read Data, {len(positive_terms_predicted)} positive.')
 
 #split keywords from terms

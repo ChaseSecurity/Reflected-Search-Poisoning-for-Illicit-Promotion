@@ -9,13 +9,20 @@ from sklearn.metrics import f1_score,  accuracy_score, precision_score, recall_s
 from sklearn.model_selection import train_test_split
 import torch
 import csv
+import argparse
+
 logging.basicConfig(level=logging.INFO)
 transformers_logger = logging.getLogger("transformers")
 transformers_logger.setLevel(logging.WARNING)
 
-# TODO: fill filepath
-model_dir = ''
-ground_truth_dir = ''
+parser = argparse.ArgumentParser()
+parser.add_argument('--model_path', type=str, default='', required=True, help='The trained model output directory')
+parser.add_argument('--gt_dir', type=str, default='./groundtruth', help='The ground truth dataset directory')
+args = parser.parse_args()
+
+model_dir = args.model_path
+ground_truth_dir = args.gt_dir
+
 
 # Read Classes
 labels_list = ['website', 'wechat', 'qq', 'telegram', 'others','telephone']

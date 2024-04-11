@@ -6,12 +6,17 @@ from sklearn.ensemble import RandomForestClassifier
 from util import *
 import pickle
 import warnings
+import argparse
 warnings.filterwarnings("ignore")
 logging.basicConfig(level=logging.INFO)
 
-# TODO: fill filepath
-ground_truth_dir = ''
-model_dir = ''
+parser = argparse.ArgumentParser()
+parser.add_argument('--model_path', type=str, default='', required=True, help='The trained model output directory')
+parser.add_argument('--gt_dir', type=str, default='./groundtruth', help='The ground truth dataset directory')
+args = parser.parse_args()
+
+model_dir = args.model_path
+ground_truth_dir = args.gt_dir
 
 positive_cases = [
     (

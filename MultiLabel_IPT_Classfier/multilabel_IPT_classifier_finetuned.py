@@ -3,10 +3,6 @@ Follow tutorials listed below
   https://github.com/ThilinaRajapakse/simpletransformers
 """
 
-# TODO: fill filepath
-model_dir = ''
-ground_truth_dir = ''
-
 from simpletransformers.classification import MultiLabelClassificationModel
 import pandas as pd
 import logging
@@ -14,11 +10,18 @@ from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_sc
 from sklearn.model_selection import train_test_split
 import torch
 import csv
-import re
+import argparse
 logging.basicConfig(level=logging.INFO)
 transformers_logger = logging.getLogger("transformers")
 transformers_logger.setLevel(logging.WARNING)
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--model_path', type=str, default='', required=True, help='The trained model output directory')
+parser.add_argument('--gt_dir', type=str, default='./groundtruth', help='The ground truth dataset directory')
+args = parser.parse_args()
+
+model_dir = args.model_path
+ground_truth_dir = args.gt_dir
 
 # Read Classes
 labels_list = []
