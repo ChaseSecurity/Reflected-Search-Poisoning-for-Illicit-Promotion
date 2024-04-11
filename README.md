@@ -6,7 +6,7 @@
 
 ## Data
 
-We release all the datasets as collected or labeled in our study. These datasets include the [IPT search keywords](https://drive.google.com/file/d/1L1yePl_evc-1OhyD3nOMMxhNjVlQCH_D/view?usp=drive_link), [the IPTs](https://drive.google.com/file/d/1zeLtwGIMo3NEkSdVT2G_IE923nrpWkPA/view?usp=drive_link), [the IPT contacts of various categories](https://drive.google.com/file/d/1lFwodHIV6sSVqJy4L-vAu3zi0jM0SEVT/view?usp=drive_link) and the [messages collected from Telegram](https://drive.google.com/file/d/16bA7E9vqEFbuD3QttfPH6Tc43xJnWuDs/view?usp=drive_link).
+To prevent miscreants from launching new RSP attacks, we hide the vulnerable URSes and make the rest of the data public which include the [IPT search keywords](https://drive.google.com/file/d/1L1yePl_evc-1OhyD3nOMMxhNjVlQCH_D/view?usp=drive_link), [the IPTs](https://drive.google.com/file/d/1zeLtwGIMo3NEkSdVT2G_IE923nrpWkPA/view?usp=drive_link), [the IPT contacts of various categories](https://drive.google.com/file/d/1lFwodHIV6sSVqJy4L-vAu3zi0jM0SEVT/view?usp=drive_link) and the [messages collected from Telegram](https://drive.google.com/file/d/16bA7E9vqEFbuD3QttfPH6Tc43xJnWuDs/view?usp=drive_link).
 
 ## Code
 
